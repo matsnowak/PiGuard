@@ -32,8 +32,7 @@ public class SensorController {
     public Sensor add(@RequestBody Sensor newSensor) throws SensorException {
         return sensorService.add(newSensor);
     }
-
-
+    
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void delete(Sensor sensor) {
          sensorService.delete(sensor);

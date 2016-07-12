@@ -1,6 +1,5 @@
 package com.matsnowak.smartalarm.main;
 
-import com.matsnowak.smartalarm.main.repositories.CommunicationSlotRepository;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
