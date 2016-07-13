@@ -16,6 +16,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import static io.restassured.RestAssured.when;
+import static org.apache.http.HttpStatus.SC_FORBIDDEN;
+import static org.apache.http.HttpStatus.SC_METHOD_NOT_ALLOWED;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -44,13 +46,56 @@ public class CommunicationSlotControllerTest {
     }
 
     @Test
-    public void name() throws Exception {
+    public void getAllT() throws Exception {
         when()
                 .get("/communicationSlots")
         .then()
                 .statusCode(SC_OK)
                 .body(not(empty()));
     }
+
+    @Test
+    public void findById() throws Exception {
+        when()
+                .get("/communicationSlots/1")
+                .then()
+                .statusCode(SC_OK)
+                .body(not(empty()));
+    }
+
+    @Test
+    public void notAllowInsertByPut() throws Exception {
+        when()
+                .put("/communicationSlots")
+                .then()
+                .statusCode(SC_METHOD_NOT_ALLOWED);
+    }
+
+    @Test
+    public void notAllowInsertByPost() throws Exception {
+        when()
+                .post("/communicationSlots")
+                .then()
+                .statusCode(SC_METHOD_NOT_ALLOWED);
+    }
+
+    @Test
+    public void notAllowUpdate() throws Exception {
+        when()
+                .patch("/communicationSlots")
+                .then()
+                .statusCode(SC_METHOD_NOT_ALLOWED);
+    }
+
+    @Test
+    public void notAllowDelete() throws Exception {
+        when()
+                .delete("/communicationSlots")
+                .then()
+                .statusCode(SC_METHOD_NOT_ALLOWED);
+    }
+
+
 
 
 }
