@@ -4,10 +4,10 @@ package com.matsnowak.smartalarm.main;
  * Created by Mateusz on 20.06.2016.
  */
 
-import com.matsnowak.smartalarm.main.repositories.CommunicationSlotRepository;
 import com.matsnowak.smartalarm.model.CommunicationSlot;
 import com.matsnowak.smartalarm.model.CommunicationSlotAddress;
 import com.matsnowak.smartalarm.model.CommunicationSlotState;
+import com.matsnowak.smartalarm.repositories.CommunicationSlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +29,7 @@ public class AutoConfig {
         slotRepository.save(slots());
     }
 
-    private List<CommunicationSlot> slots() {
+    public List<CommunicationSlot> slots() {
         List<CommunicationSlot> result = new LinkedList<>();
         result.add(new CommunicationSlot(CommunicationSlotAddress.SLOT_1, CommunicationSlotState.NOT_USED));
         result.add(new CommunicationSlot(CommunicationSlotAddress.SLOT_2, CommunicationSlotState.NOT_USED));
