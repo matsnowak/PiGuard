@@ -1,5 +1,6 @@
 package com.matsnowak.smartalarm.controllers;
 
+import com.matsnowak.smartalarm.main.ApiUrls;
 import com.matsnowak.smartalarm.main.AutoConfig;
 import com.matsnowak.smartalarm.main.CustomRestMvcConfiguration;
 import com.matsnowak.smartalarm.main.ServerApplication;
@@ -28,30 +29,14 @@ import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.Matchers.*;
 
 /**
- * Created by Mateusz on 12.07.2016.
+ * Created by Mateusz Nowak on 12.07.2016.
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ServerApplication.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
-public class CommunicationSlotControllerTest {
-
-    private CommunicationSlot testSlot() {
-        return new CommunicationSlot(SLOT_11, INPUT);
-    }
-
-    private String mapping(String endpoint) {
-        return CustomRestMvcConfiguration.API_BASE_PATH + endpoint;
-    }
-
-    private CommunicationSlot slot(CommunicationSlotAddress address, CommunicationSlotState state) {
-        return new CommunicationSlot(address, state);
-    }
-
-    @Autowired
-    CommunicationSlotRepository slotsRepository;
-
+public class SlotControllerTest {
 
     @Autowired
     AutoConfig autoConfig;
@@ -62,12 +47,10 @@ public class CommunicationSlotControllerTest {
     @Before
     public void setUp() throws Exception {
         RestAssured.port = port;
-//        slotsRepository.deleteAll();
-//        slotsRepository.save(autoConfig.slots());
     }
 
     @Test
-    public void findAll_GET_returnList_OK_200() throws Exception {
+    public void findAll_by_GET_returnList_OK_200() throws Exception {
         when()
                 .get(mapping("/slots"))
         .then()
@@ -76,7 +59,7 @@ public class CommunicationSlotControllerTest {
     }
 
     @Test
-    public void findById_GET_returnBody_OK_200() throws Exception {
+    public void findById_by_GET_returnBody_OK_200() throws Exception {
         when()
                 .get(mapping("/slots/1"))
         .then()
@@ -88,7 +71,7 @@ public class CommunicationSlotControllerTest {
     }
 
     @Test
-    public void findById_GET_notExisting_NotFound_404() throws Exception {
+    public void findById_by_GET_notExisting_NotFound_404() throws Exception {
         when()
                 .get(mapping("/slots/99"))
         .then()
@@ -97,7 +80,7 @@ public class CommunicationSlotControllerTest {
     }
 
     @Test
-    public void PUT_onCollection_notAllowed_405() throws Exception {
+    public void save_by_PUT_onCollection_notAllowed_405() throws Exception {
         given()
                 .contentType(ContentType.JSON)
                 .body(slot(SLOT_11, INPUT))
@@ -108,7 +91,7 @@ public class CommunicationSlotControllerTest {
     }
 
     @Test
-    public void PUT_onSingle_existing_notAllowed_405() throws Exception {
+    public void save_by_PUT_onEntity_existing_notAllowed_405() throws Exception {
         given()
                 .contentType(ContentType.JSON)
                 .body(slot(SLOT_2, INPUT))
@@ -119,7 +102,7 @@ public class CommunicationSlotControllerTest {
     }
 
     @Test
-    public void PUT_onSingle_notExisting_notAllowed_405() throws Exception {
+    public void save_by_PUT_onEntity_notExisting_notAllowed_405() throws Exception {
         given()
                 .contentType(ContentType.JSON)
                 .body(slot(SLOT_12, INPUT))
@@ -130,7 +113,7 @@ public class CommunicationSlotControllerTest {
     }
 
     @Test
-    public void insert_POST_onCollection_notAllowed_405() throws Exception {
+    public void save_by__POST_onCollection_notAllowed_405() throws Exception {
         given()
                 .contentType(ContentType.JSON)
                 .body(slot(SLOT_13, INPUT))
@@ -141,7 +124,7 @@ public class CommunicationSlotControllerTest {
     }
 
     @Test
-    public void insert_POST_onSingle_existing_notAllowed_405() throws Exception {
+    public void save_by_POST_onEntity_existing_notAllowed_405() throws Exception {
         given()
                 .contentType(ContentType.JSON)
                 .body(slot(SLOT_14, INPUT))
@@ -152,7 +135,7 @@ public class CommunicationSlotControllerTest {
     }
 
     @Test
-    public void insert_POST_onSingle_notExisting_notAllowed_405() throws Exception {
+    public void save_by_POST_onEntity_notExisting_notAllowed_405() throws Exception {
         given()
                 .contentType(ContentType.JSON)
                 .body(slot(SLOT_15, INPUT))
@@ -163,7 +146,7 @@ public class CommunicationSlotControllerTest {
     }
 
     @Test
-    public void PATCH_onCollection_notAllowed_405() throws Exception {
+    public void save_by_PATCH_onCollection_notAllowed_405() throws Exception {
         when()
                 .patch(mapping("/slots"))
         .then()
@@ -171,7 +154,7 @@ public class CommunicationSlotControllerTest {
     }
 
     @Test
-    public void PATCH_onSingle_existing_onlyState_OK_200() throws Exception {
+    public void save_by_PATCH_onEntity_existing_onlyState_OK_200() throws Exception {
         given()
                 .contentType(ContentType.JSON)
                 .body("{ \"state\" : \"INPUT\" }")
@@ -184,9 +167,8 @@ public class CommunicationSlotControllerTest {
     }
 
 
-
     @Test
-    public void PATCH_onSingle_notExisting_NotFound_404() throws Exception {
+    public void save_by_PATCH_onEntity_notExisting_NotFound_404() throws Exception {
         given()
                 .contentType(ContentType.JSON)
                 .body("{ \"state\" : \"INPUT\" }")
@@ -198,18 +180,18 @@ public class CommunicationSlotControllerTest {
     }
 
     @Test
-    public void PATCH_onSingle_existing_address_CONFLICT_409() throws Exception {
+    public void save_by_PATCH_onEntity_existing_addressChanged_badRequest_400() throws Exception {
         given()
                 .contentType(ContentType.JSON)
                 .body("{ \"address\" : \"SLOT_16\" }")
         .when()
                 .patch(mapping("/slots/5"))
         .then()
-                .statusCode(SC_CONFLICT);
+                .statusCode(SC_BAD_REQUEST);
     }
 
     @Test
-    public void DELETE_onCollection_notAllowed_405() throws Exception {
+    public void delete_by_DELETE_onCollection_notAllowed_405() throws Exception {
         when()
                 .delete(mapping("/slots"))
                 .then()
@@ -217,11 +199,20 @@ public class CommunicationSlotControllerTest {
     }
 
     @Test
-    public void DELETE_onSingle_notAllowed_405() throws Exception {
+    public void delete_by_DELETE_onEntity_notAllowed_405() throws Exception {
         when()
                 .delete(mapping("/slots/1"))
                 .then()
                 .statusCode(SC_METHOD_NOT_ALLOWED);
+    }
+
+
+    private String mapping(String endpoint) {
+        return ApiUrls.API_ROOT + endpoint;
+    }
+
+    private CommunicationSlot slot(CommunicationSlotAddress address, CommunicationSlotState state) {
+        return new CommunicationSlot(address, state);
     }
 
 

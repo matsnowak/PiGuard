@@ -11,7 +11,9 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "com.matsnowak.smartalarm.repositories")
+@EnableJpaRepositories(basePackages = {
+	"com.matsnowak.smartalarm.repositories",
+})
 @Import(RepositoryRestMvcConfiguration.class)
 @EntityScan(basePackages = "com.matsnowak.smartalarm.model")
 public class ServerApplication {
@@ -22,7 +24,7 @@ public class ServerApplication {
 
 	@PostConstruct
 	public void init() {
-		autoConfig.init();;
+		autoConfig.init();
 	}
 
 	public static void main(String[] args) {
