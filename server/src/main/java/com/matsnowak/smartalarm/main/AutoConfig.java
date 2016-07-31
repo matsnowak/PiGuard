@@ -4,10 +4,10 @@ package com.matsnowak.smartalarm.main;
  * Created by Mateusz on 20.06.2016.
  */
 
-import com.matsnowak.smartalarm.model.CommunicationSlot;
-import com.matsnowak.smartalarm.model.CommunicationSlotAddress;
-import com.matsnowak.smartalarm.model.CommunicationSlotState;
-import com.matsnowak.smartalarm.repositories.CommunicationSlotRepository;
+import com.matsnowak.smartalarm.model.Slot;
+import com.matsnowak.smartalarm.model.SlotAddress;
+import com.matsnowak.smartalarm.model.SlotState;
+import com.matsnowak.smartalarm.repositories.SlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,25 +22,25 @@ import java.util.List;
 public class AutoConfig {
 
     @Autowired
-    CommunicationSlotRepository slotRepository;
+    SlotRepository slotRepository;
 
 
     public void init() {
         slotRepository.save(slots());
     }
 
-    public List<CommunicationSlot> slots() {
-        List<CommunicationSlot> result = new LinkedList<>();
-        result.add(new CommunicationSlot(CommunicationSlotAddress.SLOT_1, CommunicationSlotState.NOT_USED));
-        result.add(new CommunicationSlot(CommunicationSlotAddress.SLOT_2, CommunicationSlotState.NOT_USED));
-        result.add(new CommunicationSlot(CommunicationSlotAddress.SLOT_3, CommunicationSlotState.NOT_USED));
-        result.add(new CommunicationSlot(CommunicationSlotAddress.SLOT_4, CommunicationSlotState.NOT_USED));
-        result.add(new CommunicationSlot(CommunicationSlotAddress.SLOT_5, CommunicationSlotState.NOT_USED));
-        result.add(new CommunicationSlot(CommunicationSlotAddress.SLOT_6, CommunicationSlotState.NOT_USED));
-        result.add(new CommunicationSlot(CommunicationSlotAddress.SLOT_7, CommunicationSlotState.NOT_USED));
-        result.add(new CommunicationSlot(CommunicationSlotAddress.SLOT_8, CommunicationSlotState.NOT_USED));
-        result.add(new CommunicationSlot(CommunicationSlotAddress.SLOT_9, CommunicationSlotState.NOT_USED));
-        result.add(new CommunicationSlot(CommunicationSlotAddress.SLOT_10, CommunicationSlotState.NOT_USED));
+    public List<Slot> slots() {
+        List<Slot> result = new LinkedList<>();
+        result.add(new Slot(SlotAddress.SLOT_1, SlotState.NOT_USED));
+        result.add(new Slot(SlotAddress.SLOT_2, SlotState.NOT_USED));
+        result.add(new Slot(SlotAddress.SLOT_3, SlotState.NOT_USED));
+        result.add(new Slot(SlotAddress.SLOT_4, SlotState.NOT_USED));
+        result.add(new Slot(SlotAddress.SLOT_5, SlotState.NOT_USED));
+        result.add(new Slot(SlotAddress.SLOT_6, SlotState.NOT_USED));
+        result.add(new Slot(SlotAddress.SLOT_7, SlotState.NOT_USED));
+        result.add(new Slot(SlotAddress.SLOT_8, SlotState.NOT_USED));
+        result.add(new Slot(SlotAddress.SLOT_9, SlotState.NOT_USED));
+        result.add(new Slot(SlotAddress.SLOT_10, SlotState.NOT_USED));
 
         return result;
     }

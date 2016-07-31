@@ -6,7 +6,7 @@ import javax.persistence.*;
  * Created by Mateusz on 19.06.2016.
  */
 @Entity
-public class CommunicationSlot {
+public class Slot {
 
     @Id
     @GeneratedValue
@@ -14,28 +14,28 @@ public class CommunicationSlot {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
-    private CommunicationSlotAddress address;
+    private SlotAddress address;
 
     @Column(nullable = false)
-    private CommunicationSlotState state;
+    private SlotState state;
 
-    public void setState(CommunicationSlotState state) {
+    public void setState(SlotState state) {
         this.state = state;
     }
 
 
-    public CommunicationSlot(CommunicationSlotAddress address, CommunicationSlotState state) {
+    public Slot(SlotAddress address, SlotState state) {
         this.address = address;
         this.state = state;
     }
 
-    protected CommunicationSlot() {}
+    protected Slot() {}
 
-    public CommunicationSlotAddress getAddress() {
+    public SlotAddress getAddress() {
         return address;
     }
 
-    public CommunicationSlotState getState() {
+    public SlotState getState() {
         return state;
     }
 

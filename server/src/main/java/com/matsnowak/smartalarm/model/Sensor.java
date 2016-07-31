@@ -21,13 +21,13 @@ public class Sensor {
 
     @OneToOne()
     @JoinColumn(name = "slotKey")
-    private CommunicationSlot communicationSlot;
+    private Slot slot;
 
 
-    public  Sensor(String name, SensorType sensorType, CommunicationSlot communicationSlot) {
+    public  Sensor(String name, SensorType sensorType, Slot slot) {
         this.name = name;
         this.sensorType = sensorType;
-        this.communicationSlot = communicationSlot;
+        this.slot = slot;
     }
 
     protected Sensor() {}
@@ -52,11 +52,11 @@ public class Sensor {
         this.sensorType = sensorType;
     }
 
-    public CommunicationSlot getCommunicationSlot() {
-        return communicationSlot;
+    public Slot getSlot() {
+        return slot;
     }
 
-    public void setCommunicationSlot(CommunicationSlot communicationSlot) {
-        this.communicationSlot = communicationSlot;
+    public void setSlot(Slot slot) {
+        this.slot = slot;
     }
 }

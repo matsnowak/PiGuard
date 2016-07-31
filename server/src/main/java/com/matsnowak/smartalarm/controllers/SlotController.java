@@ -1,10 +1,10 @@
 package com.matsnowak.smartalarm.controllers;
 
 import com.matsnowak.smartalarm.main.ApiUrls;
-import com.matsnowak.smartalarm.model.CommunicationSlot;
-import com.matsnowak.smartalarm.model.CommunicationSlotAddress;
-import com.matsnowak.smartalarm.model.CommunicationSlotState;
-import com.matsnowak.smartalarm.repositories.CommunicationSlotRepository;
+import com.matsnowak.smartalarm.model.Slot;
+import com.matsnowak.smartalarm.model.SlotAddress;
+import com.matsnowak.smartalarm.model.SlotState;
+import com.matsnowak.smartalarm.repositories.SlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class SlotController {
 
     @Autowired
-    private CommunicationSlotRepository slotRepository;
+    private SlotRepository slotRepository;
 
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}", path = "/{id}")
@@ -37,20 +37,20 @@ public class SlotController {
     }
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/{id}", path = "/{id}")
-    public ResponseEntity<CommunicationSlot> updateSlotState(@PathVariable("id") Integer id, @RequestBody CommunicationSlot updatedSlot) {
-        CommunicationSlot fromRepo = slotRepository.findOne(id);
+    public ResponseEntity<Slot> updateSlotState(@PathVariable("id") Integer id, @RequestBody Slot updatedSlot) {
+        Slot fromRepo = slotRepository.findOne(id);
         if (fromRepo == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        CommunicationSlotAddress newAddress = updatedSlot.getAddress();
+        SlotAddress newAddress = updatedSlot.getAddress();
         if (newAddress != null) {
             if (!newAddress.equals(fromRepo.getAddress())) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         }
 
-        CommunicationSlotState newState = updatedSlot.getState();
+        SlotState newState = updatedSlot.getState();
         if (newState != null) {
             fromRepo.setState(newState);
             return new ResponseEntity<>(slotRepository.save(fromRepo), HttpStatus.OK);

@@ -20,7 +20,7 @@ public class Signaller {
 
     @OneToOne()
     @JoinColumn(name = "slotKey")
-    private CommunicationSlot communicationSlot;
+    private Slot slot;
 
     protected Signaller() {}
 
@@ -44,11 +44,11 @@ public class Signaller {
         this.sensorType = sensorType;
     }
 
-    public CommunicationSlot getCommunicationSlot() {
-        return communicationSlot;
+    public Slot getSlot() {
+        return slot;
     }
 
-    public void setCommunicationSlot(CommunicationSlot communicationSlot) {
-        this.communicationSlot = communicationSlot;
+    public void setSlot(Slot slot) {
+        this.slot = slot;
     }
 }
