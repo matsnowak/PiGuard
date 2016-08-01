@@ -1,6 +1,7 @@
 package com.matsnowak.smartalarm.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by Mateusz on 14.06.2016.
@@ -19,6 +20,7 @@ public class Sensor {
     @Column(nullable = false)
     private SensorType sensorType;
 
+    @NotNull
     @OneToOne()
     @JoinColumn(name = "slotKey")
     private Slot slot;
