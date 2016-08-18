@@ -1,6 +1,7 @@
 package com.matsnowak.smartalarm.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Created by Mateusz on 19.06.2016.
@@ -41,5 +42,30 @@ public class Slot {
 
     public Integer getId() {
         return id;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Slot slot = (Slot) o;
+        return Objects.equals(getId(), slot.getId()) &&
+                getAddress() == slot.getAddress() &&
+                getState() == slot.getState();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getAddress(), getState());
+    }
+
+    @Override
+    public String toString() {
+        return "Slot{" +
+                "id=" + id +
+                ", address=" + address +
+                ", state=" + state +
+                '}';
     }
 }

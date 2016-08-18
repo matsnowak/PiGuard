@@ -2,6 +2,7 @@ package com.matsnowak.smartalarm.repositories;
 
 import com.matsnowak.smartalarm.main.ApiUrls;
 import com.matsnowak.smartalarm.model.Slot;
+import com.matsnowak.smartalarm.model.SlotAddress;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
@@ -21,4 +22,6 @@ public interface SlotRepository extends CrudRepository<Slot, Integer> {
 
     @RestResource(exported = false)
     void deleteAll();
+
+    Slot findByAddress(SlotAddress slotAddress);
 }
