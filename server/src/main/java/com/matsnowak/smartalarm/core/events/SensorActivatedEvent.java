@@ -30,5 +30,13 @@ public class SensorActivatedEvent implements Event {
 
     public SensorActivatedEvent() {
         this.uuid = UUID.randomUUID();
+        this.created = LocalDateTime.now();
     }
+
+    public SensorActivatedEvent(Sensor sensor) {
+        this.uuid = UUID.randomUUID();
+        this.created = LocalDateTime.now();
+    }
+
+
 }
