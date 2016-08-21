@@ -14,6 +14,7 @@ import com.pi4j.io.gpio.*;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +22,8 @@ import java.util.Objects;
 /**
  * Created by Mateusz Nowak on 17.08.2016.
  */
+
+@Component // maybe factory
 public class RaspberyPi3Platform implements Platform {
     private final List<GpioPinDigitalInput> inputs = Lists.newLinkedList();
     private SlotAddressMapping<Pin> slotAddressMapping;
