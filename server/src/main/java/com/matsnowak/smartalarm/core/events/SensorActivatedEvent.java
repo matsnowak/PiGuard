@@ -38,5 +38,12 @@ public class SensorActivatedEvent implements Event {
         this.created = LocalDateTime.now();
     }
 
-
+    @Override
+    public String toString() {
+        return "SensorActivatedEvent{" +
+                "uuid=" + uuid +
+                ", created=" + created +
+                ", sensor=" + sensor +
+                '}';
+    }
 }

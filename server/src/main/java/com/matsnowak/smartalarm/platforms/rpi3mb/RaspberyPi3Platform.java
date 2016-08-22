@@ -14,6 +14,7 @@ import com.pi4j.io.gpio.*;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,9 +24,12 @@ import java.util.Objects;
  * Created by Mateusz Nowak on 17.08.2016.
  */
 
-@Component // maybe factory
+@Component
 public class RaspberyPi3Platform implements Platform {
     private final List<GpioPinDigitalInput> inputs = Lists.newLinkedList();
+
+    @Autowired
+    @Qualifier("defaultMapping")
     private SlotAddressMapping<Pin> slotAddressMapping;
 
     @Autowired
@@ -56,14 +60,13 @@ public class RaspberyPi3Platform implements Platform {
                     Sensor sensorByAddress = sensorRepository.findBySlotAddress(slotAddress);
                     publishEvent(Events.newSlotActivatedEvent(sensorByAddress));
                 }
-
             }
         }});
 
     }
 
     private void publishEvent(SensorActivatedEvent sensorActivatedEvent) {
-        // TODO call calback
+        System.out.println("Sensor activated: " + sensorActivatedEvent);
     }
 
     private Pin mapSlot(Slot slot) {

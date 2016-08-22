@@ -7,10 +7,15 @@ import com.matsnowak.smartalarm.core.SlotAddressMapping;
 import com.matsnowak.smartalarm.model.SlotAddress;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.RaspiPin;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Mateusz Nowak on 18.08.2016.
  */
+
+@Component
+@Qualifier("defaultMapping")
 public class Rpi3mbSlotAddressDefaultMapping implements SlotAddressMapping<Pin> {
     private static final ImmutableBiMap<SlotAddress, Pin> slotMapping;
 
