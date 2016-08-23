@@ -13,6 +13,11 @@ import com.matsnowak.smartalarm.repositories.SensorRepository;
 import com.pi4j.io.gpio.*;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -23,9 +28,9 @@ import java.util.Objects;
 /**
  * Created by Mateusz Nowak on 17.08.2016.
  */
-
-@Component
 public class RaspberyPi3Platform implements Platform {
+    private final Logger logger = LoggerFactory.getLogger(RaspberyPi3Platform.class);
+
     private final List<GpioPinDigitalInput> inputs = Lists.newLinkedList();
 
     @Autowired
@@ -46,7 +51,7 @@ public class RaspberyPi3Platform implements Platform {
                 configureInputSlot(slot);
             }
         });
-
+        logger.info("Start monitoring with slots" + slotList);
     }
 
     private void configureInputSlot(Slot slot) {

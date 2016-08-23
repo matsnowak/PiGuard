@@ -3,11 +3,13 @@ package com.matsnowak.smartalarm.main;
 import com.google.common.collect.Lists;
 import com.matsnowak.smartalarm.core.Platform;
 import com.matsnowak.smartalarm.model.Slot;
+import com.matsnowak.smartalarm.platforms.PlatformFactory;
 import com.matsnowak.smartalarm.repositories.SlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.orm.jpa.EntityScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -35,6 +37,12 @@ public class ServerApplication {
 
 	@Autowired
 	SlotRepository slotRepository;
+
+
+	@Bean
+	Platform platform() {
+		return PlatformFactory.newInstance();
+	}
 
 
 	@PostConstruct
