@@ -32,8 +32,6 @@ public class ServerApplication {
 	@Autowired
 	AutoConfig autoConfig;
 
-	@Autowired
-	Platform platform;
 
 	@Autowired
 	SlotRepository slotRepository;
@@ -48,7 +46,6 @@ public class ServerApplication {
 	@PostConstruct
 	public void init() {
 		autoConfig.init();
-		platform.startMonitoring(Lists.newArrayList(slotRepository.findAll()));
 	}
 
 	public static void main(String[] args) {

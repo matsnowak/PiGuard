@@ -63,7 +63,7 @@ public class RaspberyPi3Platform implements Platform {
                 if (event.getState() == PinState.HIGH) {
                     SlotAddress slotAddress = slotAddressMapping.map(event.getPin().getPin());
                     Sensor sensorByAddress = sensorRepository.findBySlotAddress(slotAddress);
-                    publishEvent(Events.newSlotActivatedEvent(sensorByAddress));
+//                    publishEvent(Events.newSlotActivatedEvent(sensorByAddress)); // TODO back here and fix
                 }
             }
         }});

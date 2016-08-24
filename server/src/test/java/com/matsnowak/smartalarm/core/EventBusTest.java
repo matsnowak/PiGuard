@@ -56,11 +56,12 @@ public class EventBusTest {
         return new TestEvent();
     }
 
-    public class TestEvent implements Event {
+    public class TestEvent extends Event {
+
 
         @Override
-        public UUID getUuid() {
-            return UUID.fromString(UUID_SEED);
+        public EventType getEventType() {
+            return EventType.SENSOR_ACTIVATED;
         }
     }
 

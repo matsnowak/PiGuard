@@ -17,7 +17,7 @@ public class ArmedZone {
     private Zone zone;
 
     @Column(nullable = false)
-    private LocalDateTime startMonitoringFrom;
+    private LocalDateTime startGuardFrom;
 
     public ArmedZone() {}
 
@@ -26,16 +26,16 @@ public class ArmedZone {
     }
 
 
-    public LocalDateTime getStartMonitoringFrom() {
-        return startMonitoringFrom;
+    public LocalDateTime getStartGuardFrom() {
+        return startGuardFrom;
     }
 
     public static ArmedZone create(Zone zone, LocalDateTime startMonitoringFrom) {
         return new ArmedZone(zone, startMonitoringFrom);
     }
 
-    private ArmedZone(Zone zone, LocalDateTime startMonitoringFrom) {
+    private ArmedZone(Zone zone, LocalDateTime startGuardFrom) {
         this.zone = zone;
-        this.startMonitoringFrom = startMonitoringFrom;
+        this.startGuardFrom = startGuardFrom;
     }
 }
