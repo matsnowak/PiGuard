@@ -28,23 +28,7 @@ import static org.hamcrest.Matchers.*;
 /**
  * Created by Mateusz Nowak on 12.07.2016.
  */
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ServerApplication.class)
-@WebAppConfiguration
-@IntegrationTest("server.port:0")
-public class SlotControllerTest {
-
-    @Autowired
-    AutoConfig autoConfig;
-
-    @Value("${local.server.port}")
-    int port;
-
-    @Before
-    public void setUp() throws Exception {
-        RestAssured.port = port;
-    }
+public class SlotControllerTest  extends AbstractControllerTest{
 
     @Test
     public void findAll_by_GET_returnList_OK_200() throws Exception {

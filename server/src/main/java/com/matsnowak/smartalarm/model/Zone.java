@@ -21,6 +21,14 @@ public class Zone {
     @JoinTable(name="ZONE_SENSOR")
     private List<Sensor> sensors = new LinkedList<Sensor>();
 
+    public static Zone create(String name, List<Sensor> sensors) {
+        Zone zone = new Zone();
+        zone.setName(name);
+        zone.setSensors(sensors);
+
+        return zone;
+    }
+
     public Integer getId() {
         return id;
     }

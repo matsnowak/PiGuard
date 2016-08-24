@@ -21,19 +21,9 @@ import static org.hamcrest.Matchers.not;
  * Created by Mateusz Nowak on 31.07.2016.
  */
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ServerApplication.class)
-@WebAppConfiguration
-@IntegrationTest("server.port:0")
-public class SensorControllerTest {
 
-    @Value("${local.server.port}")
-    int port;
+public class SensorControllerTest extends AbstractControllerTest{
 
-    @Before
-    public void setUp() throws Exception {
-        RestAssured.port = port;
-    }
 
     private String mapping(String endpoint) {
         return ApiUrls.API_ROOT + endpoint;
