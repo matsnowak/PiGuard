@@ -22,7 +22,7 @@ public class Sensor {
     private SensorType sensorType;
 
     @NotNull
-    @OneToOne()
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "slotKey")
     private Slot slot;
 

@@ -22,7 +22,7 @@ public class EventBus {
     private Map<Class<?>, List<EventListener<?>>> listeners = Maps.newConcurrentMap();
 
     public <T extends Event> void publish(T event) {
-        logger.info("Event published ", event);
+        logger.info("Event published " + event);
         List<EventListener<?>> eventListeners = listeners.get(event.getClass());
         if (eventListeners != null) {
             for (int i = 0; i <eventListeners.size() ; i++) {
@@ -33,7 +33,7 @@ public class EventBus {
     }
 
     public void register(EventListener eventListener) {
-        logger.info("EventListener registered ", eventListener);
+        logger.info("EventListener registered " + eventListener);
         List<EventListener<? extends Event>> eventListeners = listeners.get(eventListener.getEventType());
         if (eventListeners == null){
             eventListeners = Lists.newLinkedList();

@@ -17,7 +17,7 @@ public class Zone {
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="ZONE_SENSOR")
     private List<Sensor> sensors = new LinkedList<Sensor>();
 

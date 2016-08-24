@@ -6,6 +6,7 @@ import com.matsnowak.smartalarm.core.events.ZoneArmedEvent;
 import com.matsnowak.smartalarm.core.events.ZoneDisarmedEvent;
 import com.matsnowak.smartalarm.model.ArmedZone;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.core.annotation.HandleAfterCreate;
 import org.springframework.data.rest.core.annotation.HandleAfterDelete;
 import org.springframework.data.rest.core.annotation.HandleAfterSave;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
@@ -22,8 +23,8 @@ public class ArmedZoneHandler {
     @Autowired
     EventBus eventBus;
 
-    @HandleAfterSave
-    public void afterSave(ArmedZone az) {
+    @HandleAfterCreate
+    public void afterCreate(ArmedZone az) {
         ZoneArmedEvent event = Events.newZoneArmedEvent(az.getZone().getId(), az.getStartGuardFrom());
         eventBus.publish(event);
     }
