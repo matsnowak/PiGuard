@@ -5,10 +5,7 @@ import com.matsnowak.smartalarm.core.Events;
 import com.matsnowak.smartalarm.core.Platform;
 import com.matsnowak.smartalarm.core.SlotAddressMapping;
 import com.matsnowak.smartalarm.core.events.SensorActivatedEvent;
-import com.matsnowak.smartalarm.model.Sensor;
-import com.matsnowak.smartalarm.model.Slot;
-import com.matsnowak.smartalarm.model.SlotAddress;
-import com.matsnowak.smartalarm.model.SlotState;
+import com.matsnowak.smartalarm.model.*;
 import com.matsnowak.smartalarm.repositories.SensorRepository;
 import com.pi4j.io.gpio.*;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
@@ -40,34 +37,53 @@ public class RaspberyPi3Platform implements Platform {
     @Autowired
     private SensorRepository sensorRepository;
 
-    GpioController gpioController;
+    private GpioController gpioController;
+
 
     @Override
-    public void startMonitoring(List<Slot> slotList) {
-        gpioController = GpioFactory.getInstance();
+    public void update(Slot slot) {
+        SlotState state = slot.getState();
+        if (SlotState.INPUT.equals(state)) {
+            getController().provisionDigitalInputPin(mapSlot(slot), PinPullResistance.PULL_DOWN);
+        }
+        if (SlotState.OUTPUT.equals(state)) {
+            getController().provisionDigitalOutputPin(mapSlot(slot), PinState.HIGH);
 
-        slotList.forEach(slot -> {
-            if (slot.getState() == SlotState.INPUT) {
-                configureInputSlot(slot);
-            }
-        });
-        logger.info("Start monitoring with slots" + slotList);
+        }
+        if (SlotState.NOT_USED.equals(state)) {
+            getController().provisionDigitalOutputPin(mapSlot(slot), PinState.LOW); // TODO check for status
+        }
     }
 
-    private void configureInputSlot(Slot slot) {
-        GpioPinDigitalInput gpioPinDigitalInput = gpioController.provisionDigitalInputPin(mapSlot(slot), PinPullResistance.PULL_DOWN);
-        inputs.add(gpioPinDigitalInput);
-        gpioPinDigitalInput.addListener(new com.pi4j.io.gpio.event.GpioPinListener[]{new GpioPinListenerDigital() {
+    @Override
+    public void startMonitoring(Zone zone) {
+        zone.getSensors().forEach(sensor -> {
+            configureSensor(sensor);
+        });
+        logger.info("Started monitoring zone: " + zone);
+    }
+
+    private GpioController getController() {
+        if (gpioController == null) {
+            gpioController = GpioFactory.getInstance();
+        }
+
+        return gpioController;
+    }
+
+    private void configureSensor(Sensor sensor) {
+        GpioPinDigitalInput gpioPinDigitalInput = gpioController.provisionDigitalInputPin(mapSlot(sensor.getSlot()), PinPullResistance.PULL_DOWN);
+        gpioPinDigitalInput.addListener(new GpioPinListenerDigital() {
             @Override
             public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
                 if (event.getState() == PinState.HIGH) {
                     SlotAddress slotAddress = slotAddressMapping.map(event.getPin().getPin());
                     Sensor sensorByAddress = sensorRepository.findBySlotAddress(slotAddress);
-//                    publishEvent(Events.newSlotActivatedEvent(sensorByAddress)); // TODO back here and fix
+                    publishEvent(Events.newSlotActivatedEvent(sensorByAddress.getId()));
                 }
             }
-        }});
-
+        });
+        logger.debug("Configured sensor " + sensor + " as input");
     }
 
     private void publishEvent(SensorActivatedEvent sensorActivatedEvent) {
@@ -82,10 +98,11 @@ public class RaspberyPi3Platform implements Platform {
     }
 
     @Override
-    public void stopMonitoring() {
-        inputs.forEach(input -> {
+    public void stopMonitoring(Zone zone) {
+        zone.getSensors().forEach( sensor -> {
+            GpioPin input = gpioController.getProvisionedPin(mapSlot(sensor.getSlot()));
             input.removeAllListeners();
-            input.removeAllTriggers();
+            logger.debug("Stopped monitoring input " + sensor.getSlot());
         });
 
         gpioController.shutdown();

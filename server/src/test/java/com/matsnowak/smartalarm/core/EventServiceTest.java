@@ -6,8 +6,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.UUID;
-
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,7 +16,7 @@ import static org.mockito.Mockito.when;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class EventBusTest {
+public class EventServiceTest {
     private final String UUID_SEED = "random uuid";
 
     @Mock
@@ -28,13 +26,12 @@ public class EventBusTest {
     @Test
     public void shouldPublishEventToListeners() throws Exception {
         // given
-        final EventBus eventBus = new EventBus();
-        when(mockEventListener.getEventType()).thenReturn(TestEvent.class);
+        final EventService eventService = new EventService();
         final TestEvent testEvent = getTestEvent();
-        eventBus.register(mockEventListener);
+        eventService.register(mockEventListener, TestEvent.class);
 
         // when
-        eventBus.publish(testEvent);
+        eventService.publish(testEvent);
 
         // then
         verify(mockEventListener, times(1)).listen(testEvent);
@@ -43,12 +40,11 @@ public class EventBusTest {
     @Test
     public void shouldThrowExceptionWhenTheSameListenerRegistrationTwice() throws Exception {
         // given
-        final EventBus eventBus = new EventBus();
-        when(mockEventListener.getEventType()).thenReturn(TestEvent.class);
+        final EventService eventService = new EventService();
 
         // when then
-        eventBus.register(mockEventListener);
-        assertThatThrownBy( () -> eventBus.register(mockEventListener))
+        eventService.register(mockEventListener, TestEvent.class);
+        assertThatThrownBy( () -> eventService.register(mockEventListener, TestEvent.class))
                 .isInstanceOf(ListenerArleadyRegisteredException.class);
     }
 

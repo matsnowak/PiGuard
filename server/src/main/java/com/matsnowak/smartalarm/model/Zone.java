@@ -3,6 +3,7 @@ package com.matsnowak.smartalarm.model;
 import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Mateusz on 14.06.2016.
@@ -51,5 +52,29 @@ public class Zone {
 
     public void setSensors(List<Sensor> sensors) {
         this.sensors = sensors;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Zone zone = (Zone) o;
+        return Objects.equals(getId(), zone.getId()) &&
+                Objects.equals(getName(), zone.getName()) &&
+                Objects.equals(getSensors(), zone.getSensors());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getSensors());
+    }
+
+    @Override
+    public String toString() {
+        return "Zone{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", sensors=" + sensors +
+                '}';
     }
 }

@@ -16,7 +16,7 @@ import java.util.Map;
  */
 
 @Component
-public class EventBus {
+public class EventService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private Map<Class<?>, List<EventListener<?>>> listeners = Maps.newConcurrentMap();
@@ -32,12 +32,12 @@ public class EventBus {
         }
     }
 
-    public void register(EventListener eventListener) {
+    public <T extends Event>  void register(EventListener<T> eventListener, Class<T> eventClass) {
         logger.info("EventListener registered " + eventListener);
-        List<EventListener<? extends Event>> eventListeners = listeners.get(eventListener.getEventType());
+        List<EventListener<? extends Event>> eventListeners = listeners.get(eventClass);
         if (eventListeners == null){
             eventListeners = Lists.newLinkedList();
-            listeners.put(eventListener.getEventType(), eventListeners);
+            listeners.put(eventClass, eventListeners);
         }
         if (eventListeners.contains(eventListener)) {
             throw new ListenerArleadyRegisteredException();

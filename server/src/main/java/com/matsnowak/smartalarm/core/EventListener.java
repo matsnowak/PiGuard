@@ -5,6 +5,4 @@ package com.matsnowak.smartalarm.core;
  */
 public interface EventListener<T extends Event> {
     void listen(T event);
-
-    Class<T> getEventType();
 }
