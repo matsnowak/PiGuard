@@ -1,9 +1,7 @@
 package com.matsnowak.smartalarm.model;
 
 import javax.persistence.*;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by Mateusz on 14.06.2016.
@@ -20,12 +18,17 @@ public class Zone {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="ZONE_SENSOR")
-    private List<Sensor> sensors = new LinkedList<Sensor>();
+    private Set<Sensor> sensors = new LinkedHashSet<>();
 
-    public static Zone create(String name, List<Sensor> sensors) {
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="ZONE_SIGNALLER")
+    private Set<Signaller> signallers = new LinkedHashSet<>();
+
+    public static Zone create(String name, List<Sensor> sensors, List<Signaller> signallers) {
         Zone zone = new Zone();
         zone.setName(name);
         zone.setSensors(sensors);
+        zone.setSignallers(signallers);
 
         return zone;
     }
@@ -47,11 +50,19 @@ public class Zone {
     }
 
     public List<Sensor> getSensors() {
-        return sensors;
+        return new LinkedList<>(this.sensors); // hack for multiple results
     }
 
     public void setSensors(List<Sensor> sensors) {
-        this.sensors = sensors;
+        this.sensors = new LinkedHashSet<>(sensors); // hack for multiple results
+    }
+
+    public List<Signaller> getSignallers() {
+        return new LinkedList<>(this.signallers); // hack for multiple results
+    }
+
+    public void setSignallers(List<Signaller> signallers) {
+        this.signallers = new LinkedHashSet<>(signallers); // hack for multiple results
     }
 
     @Override
@@ -61,12 +72,13 @@ public class Zone {
         Zone zone = (Zone) o;
         return Objects.equals(getId(), zone.getId()) &&
                 Objects.equals(getName(), zone.getName()) &&
-                Objects.equals(getSensors(), zone.getSensors());
+                Objects.equals(getSensors(), zone.getSensors()) &&
+                Objects.equals(getSignallers(), zone.getSignallers());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getSensors());
+        return Objects.hash(getId(), getName(), getSensors(), getSignallers());
     }
 
     @Override
@@ -75,6 +87,7 @@ public class Zone {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", sensors=" + sensors +
+                ", signallers=" + signallers +
                 '}';
     }
 }
