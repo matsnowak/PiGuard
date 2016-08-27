@@ -1,6 +1,7 @@
 package com.matsnowak.smartalarm.platforms.stub;
 
 import com.matsnowak.smartalarm.core.Platform;
+import com.matsnowak.smartalarm.model.Signaller;
 import com.matsnowak.smartalarm.model.Slot;
 import com.matsnowak.smartalarm.model.Zone;
 import org.slf4j.Logger;
@@ -30,5 +31,10 @@ public class StubPlatform implements Platform {
     @Override
     public void stopMonitoring(Zone zone) {
         logger.debug("Monitoring stopped " + zone);
+    }
+
+    @Override
+    public void enableSignallers(List<Signaller> signallers) {
+        logger.debug("Enable signallers " + signallers);
     }
 }
