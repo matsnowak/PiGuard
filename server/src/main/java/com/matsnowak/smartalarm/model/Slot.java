@@ -20,30 +20,45 @@ public class Slot {
     @Column(nullable = false)
     private SlotState state;
 
-    public void setState(SlotState state) {
-        this.state = state;
-    }
 
+    @Column(nullable = true)
+    private String description;
 
     public Slot(SlotAddress address, SlotState state) {
         this.address = address;
         this.state = state;
     }
+    public Slot(SlotAddress address, SlotState state, String description) {
+        this(address, state);
+        this.setDescription(description);
+    }
+
 
     protected Slot() {}
 
-    public SlotAddress getAddress() {
-        return address;
+    public Integer getId() {
+        return id;
     }
 
     public SlotState getState() {
         return state;
     }
 
-    public Integer getId() {
-        return id;
+    public void setState(SlotState state) {
+        this.state = state;
     }
 
+    public SlotAddress getAddress() {
+        return address;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     @Override
     public boolean equals(Object o) {
