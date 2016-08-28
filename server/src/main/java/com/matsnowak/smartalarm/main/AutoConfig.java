@@ -57,7 +57,7 @@ public class AutoConfig {
         result.add(new Slot(SlotAddress.SLOT_23,    SlotState.NOT_USED, "Raspberry3 Pin 36"));
         result.add(new Slot(SlotAddress.SLOT_24,    SlotState.NOT_USED, "Raspberry3 Pin 38"));
         result.add(new Slot(SlotAddress.SLOT_25,    SlotState.NOT_USED, "Raspberry3 Pin 40"));
-r
-        return result;r
+
+        return result;
     }
 }
