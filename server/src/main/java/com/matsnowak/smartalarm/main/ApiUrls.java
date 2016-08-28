@@ -5,7 +5,8 @@ package com.matsnowak.smartalarm.main;
  */
 public class ApiUrls {
     public static final String API_ROOT  = "/api";
-    public static final String API_SLOTS  = "/slots";
-    public static final String API_SENSORS = "/sensors";
-    public static final String API_ARMED_ZONES = "/armedzones";
+    public static final String API_SLOTS  = "slots";
+    public static final String API_SENSORS = "sensors";
+    public static final String API_ZONES = "zones";
+    public static final String API_ARMED_ZONES = "armedzones";
 }

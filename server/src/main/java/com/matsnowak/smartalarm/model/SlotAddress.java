@@ -4,7 +4,6 @@ package com.matsnowak.smartalarm.model;
  * Created by Mateusz on 19.06.2016.
  */
 public enum SlotAddress {
-    SLOT_0,
     SLOT_1,
     SLOT_2,
     SLOT_3,
@@ -30,4 +29,5 @@ public enum SlotAddress {
     SLOT_23,
     SLOT_24,
     SLOT_25,
+    SLOT_26,
 }

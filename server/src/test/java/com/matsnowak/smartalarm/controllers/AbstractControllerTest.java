@@ -1,5 +1,6 @@
 package com.matsnowak.smartalarm.controllers;
 
+import com.matsnowak.smartalarm.main.ApiUrls;
 import com.matsnowak.smartalarm.main.ServerApplication;
 import io.restassured.RestAssured;
 import org.junit.Before;
@@ -25,5 +26,9 @@ public abstract class AbstractControllerTest {
     @Before
     public void setUp() throws Exception {
         RestAssured.port = port;
+    }
+
+    protected String mapping(String endpoint) {
+        return ApiUrls.API_ROOT + endpoint;
     }
 }

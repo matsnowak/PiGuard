@@ -188,10 +188,6 @@ public class SlotControllerTest  extends AbstractControllerTest{
     }
 
 
-    private String mapping(String endpoint) {
-        return ApiUrls.API_ROOT + endpoint;
-    }
-
     private Slot slot(SlotAddress address, SlotState state) {
         return new Slot(address, state);
     }
