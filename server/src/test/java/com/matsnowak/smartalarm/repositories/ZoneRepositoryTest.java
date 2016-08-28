@@ -1,5 +1,6 @@
 package com.matsnowak.smartalarm.repositories;
 
+import com.google.common.collect.Sets;
 import com.matsnowak.smartalarm.model.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,8 @@ public class ZoneRepositoryTest extends AbstractRepositoryTest {
         Iterable<Zone> zonesAll = zones.findAll();
         Zone savedZone = zones.save(Zone.create(
                 "zone1",
-                Arrays.asList(savedS1, savedS2, savedS3),
-                Arrays.asList(sig1, sig2, sig3))
+                Sets.newHashSet(savedS1, savedS2, savedS3),
+                Sets.newHashSet(sig1, sig2, sig3))
         );
 
         Zone fromRepo = zones.findOne(savedZone.getId());

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Mateusz Nowak on 23.08.2016.
@@ -34,7 +35,7 @@ public class StubPlatform implements Platform {
     }
 
     @Override
-    public void enableSignallers(List<Signaller> signallers) {
+    public void enableSignallers(Set<Signaller> signallers) {
         logger.debug("Enable signallers " + signallers);
     }
 }

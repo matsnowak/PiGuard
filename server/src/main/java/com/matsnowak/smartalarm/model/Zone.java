@@ -24,7 +24,7 @@ public class Zone {
     @JoinTable(name="ZONE_SIGNALLER")
     private Set<Signaller> signallers = new LinkedHashSet<>();
 
-    public static Zone create(String name, List<Sensor> sensors, List<Signaller> signallers) {
+    public static Zone create(String name, Set<Sensor> sensors, Set<Signaller> signallers) {
         Zone zone = new Zone();
         zone.setName(name);
         zone.setSensors(sensors);
@@ -49,20 +49,21 @@ public class Zone {
         this.name = name;
     }
 
-    public List<Sensor> getSensors() {
-        return new LinkedList<>(this.sensors); // hack for multiple results
+
+    public Set<Sensor> getSensors() {
+        return sensors;
     }
 
-    public void setSensors(List<Sensor> sensors) {
-        this.sensors = new LinkedHashSet<>(sensors); // hack for multiple results
+    public void setSensors(Set<Sensor> sensors) {
+        this.sensors = sensors;
     }
 
-    public List<Signaller> getSignallers() {
-        return new LinkedList<>(this.signallers); // hack for multiple results
+    public Set<Signaller> getSignallers() {
+        return signallers;
     }
 
-    public void setSignallers(List<Signaller> signallers) {
-        this.signallers = new LinkedHashSet<>(signallers); // hack for multiple results
+    public void setSignallers(Set<Signaller> signallers) {
+        this.signallers = signallers;
     }
 
     @Override

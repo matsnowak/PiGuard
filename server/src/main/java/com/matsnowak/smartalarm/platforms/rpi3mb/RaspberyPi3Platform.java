@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Created by Mateusz Nowak on 17.08.2016.
@@ -94,7 +95,7 @@ public class RaspberyPi3Platform implements Platform {
     }
 
     @Override
-    public void enableSignallers(List<Signaller> signallers) {
+    public void enableSignallers(Set<Signaller> signallers) {
         signallers.forEach(signaller -> {
             GpioPinDigitalOutput gpioPinDigitalOutput = getController().provisionDigitalOutputPin(mapSlot(signaller.getSlot()), PinState.HIGH);
             logger.debug("Enable signaller " + signaller);
