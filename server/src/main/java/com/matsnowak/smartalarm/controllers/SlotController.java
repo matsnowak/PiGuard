@@ -3,7 +3,7 @@ package com.matsnowak.smartalarm.controllers;
 import com.matsnowak.smartalarm.main.ApiUrls;
 import com.matsnowak.smartalarm.model.Slot;
 import com.matsnowak.smartalarm.model.SlotAddress;
-import com.matsnowak.smartalarm.model.SlotState;
+import com.matsnowak.smartalarm.model.SlotMode;
 import com.matsnowak.smartalarm.repositories.SlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -50,9 +50,9 @@ public class SlotController {
             }
         }
 
-        SlotState newState = updatedSlot.getState();
-        if (newState != null) {
-            fromRepo.setState(newState);
+        SlotMode newMode = updatedSlot.getMode();
+        if (newMode != null) {
+            fromRepo.setMode(newMode);
             return new ResponseEntity<>(slotRepository.save(fromRepo), HttpStatus.OK);
         }
 

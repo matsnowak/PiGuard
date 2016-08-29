@@ -18,17 +18,20 @@ public class Slot {
     private SlotAddress address;
 
     @Column(nullable = false)
-    private SlotState state;
+    private SlotMode mode;
+
+    @Column(nullable = true)
+    public SlotState state;
 
 
     @Column(nullable = true)
     private String description;
 
-    public Slot(SlotAddress address, SlotState state) {
+    public Slot(SlotAddress address, SlotMode mode) {
         this.address = address;
-        this.state = state;
+        this.mode = mode;
     }
-    public Slot(SlotAddress address, SlotState state, String description) {
+    public Slot(SlotAddress address, SlotMode state, String description) {
         this(address, state);
         this.setDescription(description);
     }
@@ -38,6 +41,14 @@ public class Slot {
 
     public Integer getId() {
         return id;
+    }
+
+    public SlotMode getMode() {
+        return mode;
+    }
+
+    public void setMode(SlotMode mode) {
+        this.mode = mode;
     }
 
     public SlotState getState() {
@@ -67,12 +78,12 @@ public class Slot {
         Slot slot = (Slot) o;
         return Objects.equals(getId(), slot.getId()) &&
                 getAddress() == slot.getAddress() &&
-                getState() == slot.getState();
+                getMode() == slot.getMode();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getAddress(), getState());
+        return Objects.hash(getId(), getAddress(), getMode());
     }
 
     @Override
@@ -80,7 +91,7 @@ public class Slot {
         return "Slot{" +
                 "id=" + id +
                 ", address=" + address +
-                ", state=" + state +
+                ", mode=" + mode +
                 '}';
     }
 }

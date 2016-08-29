@@ -49,15 +49,15 @@ public class RaspberyPi3Platform implements Platform {
 
     @Override
     public void update(Slot slot) {
-//        SlotState state = slot.getState();
-//        if (SlotState.INPUT.equals(state)) {
+//        SlotMode state = slot.getMode();
+//        if (SlotMode.INPUT.equals(state)) {
 //            getController().provisionDigitalInputPin(mapSlot(slot), PinPullResistance.PULL_DOWN);
 //        }
-//        if (SlotState.OUTPUT.equals(state)) {
+//        if (SlotMode.OUTPUT.equals(state)) {
 //            getController().provisionDigitalOutputPin(mapSlot(slot), PinState.HIGH);
 //
 //        }
-//        if (SlotState.NOT_USED.equals(state)) {
+//        if (SlotMode.NOT_USED.equals(state)) {
 //            getController().provisionDigitalOutputPin(mapSlot(slot), PinState.LOW); // TODO check for status
 //        }
     }

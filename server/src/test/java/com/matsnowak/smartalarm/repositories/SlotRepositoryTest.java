@@ -2,7 +2,7 @@ package com.matsnowak.smartalarm.repositories;
 
 import com.matsnowak.smartalarm.model.Slot;
 import com.matsnowak.smartalarm.model.SlotAddress;
-import com.matsnowak.smartalarm.model.SlotState;
+import com.matsnowak.smartalarm.model.SlotMode;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class SlotRepositoryTest extends AbstractRepositoryTest{
     @Test
     public void shouldFindByAddress() throws Exception {
         // given
-        Slot s = new Slot(SlotAddress.SLOT_11, SlotState.INPUT);
+        Slot s = new Slot(SlotAddress.SLOT_11, SlotMode.INPUT);
         Slot saved = slotRepository.save(s);
 
         // when

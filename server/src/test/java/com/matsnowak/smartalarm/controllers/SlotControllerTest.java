@@ -1,25 +1,13 @@
 package com.matsnowak.smartalarm.controllers;
 
-import com.matsnowak.smartalarm.main.ApiUrls;
-import com.matsnowak.smartalarm.main.AutoConfig;
-import com.matsnowak.smartalarm.main.ServerApplication;
 import com.matsnowak.smartalarm.model.Slot;
 import com.matsnowak.smartalarm.model.SlotAddress;
-import com.matsnowak.smartalarm.model.SlotState;
-import io.restassured.RestAssured;
+import com.matsnowak.smartalarm.model.SlotMode;
 import io.restassured.http.ContentType;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import static com.matsnowak.smartalarm.model.SlotAddress.*;
-import static com.matsnowak.smartalarm.model.SlotState.*;
+import static com.matsnowak.smartalarm.model.SlotMode.*;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static org.apache.http.HttpStatus.*;
@@ -188,7 +176,7 @@ public class SlotControllerTest  extends AbstractControllerTest{
     }
 
 
-    private Slot slot(SlotAddress address, SlotState state) {
+    private Slot slot(SlotAddress address, SlotMode state) {
         return new Slot(address, state);
     }
 
