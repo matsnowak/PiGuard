@@ -51,7 +51,7 @@ public class OnSensorActivatedEL implements EventListener<SensorActivatedEvent> 
 
         Sensor activatedSensor = sensorRepository.findOne(event.getSensorId());
         List<ArmedZone> armedZones = Lists.newLinkedList(armedZoneRepository.findAll());
-
+        logger.debug("armedZones " + armedZones);
         List<ArmedZone> armedZonesContainingSensor = armedZones.stream()
                 .filter(armedZone -> armedZone.getZone().getSensors().contains(activatedSensor))
                 .collect(Collectors.toList());

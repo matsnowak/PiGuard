@@ -20,7 +20,7 @@ public class ArmedZone {
     private Integer id;
 
     @OneToOne
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name = "zoneId")
     private Zone zone;
 
     @Column(nullable = false)
@@ -46,5 +46,14 @@ public class ArmedZone {
     private ArmedZone(Zone zone, LocalDateTime startGuardFrom) {
         this.zone = zone;
         this.startGuardFrom = startGuardFrom;
+    }
+
+    @Override
+    public String toString() {
+        return "ArmedZone{" +
+                "id=" + id +
+                ", zone=" + zone +
+                ", startGuardFrom=" + startGuardFrom +
+                '}';
     }
 }
