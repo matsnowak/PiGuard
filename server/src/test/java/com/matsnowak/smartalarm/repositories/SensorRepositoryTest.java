@@ -1,8 +1,6 @@
 package com.matsnowak.smartalarm.repositories;
 
-import com.matsnowak.smartalarm.model.Sensor;
-import com.matsnowak.smartalarm.model.SensorType;
-import com.matsnowak.smartalarm.model.SlotAddress;
+import com.matsnowak.smartalarm.model.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,7 +23,7 @@ public class SensorRepositoryTest extends AbstractRepositoryTest{
     @Test
     public void shouldFindBySlotAddress() throws Exception {
         // given
-        Sensor s = new Sensor("name", SensorType.PIR, slotRepository.findByAddress(SlotAddress.SLOT_9));
+        Sensor s = new Sensor("name", slotRepository.findByAddress(SlotAddress.SLOT_9), TriggeringType.EDGE, PullResistance.OFF);
         Sensor saved = sensorRepository.save(s);
 
         // when

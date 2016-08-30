@@ -17,11 +17,10 @@ public class Slot {
     @Column(nullable = false, unique = true)
     private SlotAddress address;
 
+
+    // TODO should be deprecated
     @Column(nullable = false)
     private SlotMode mode;
-
-    @Column(nullable = true)
-    public SlotState state;
 
 
     @Column(nullable = true)
@@ -51,13 +50,6 @@ public class Slot {
         this.mode = mode;
     }
 
-    public SlotState getState() {
-        return state;
-    }
-
-    public void setState(SlotState state) {
-        this.state = state;
-    }
 
     public SlotAddress getAddress() {
         return address;
@@ -78,12 +70,13 @@ public class Slot {
         Slot slot = (Slot) o;
         return Objects.equals(getId(), slot.getId()) &&
                 getAddress() == slot.getAddress() &&
-                getMode() == slot.getMode();
+                getMode() == slot.getMode() &&
+                Objects.equals(getDescription(), slot.getDescription());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getAddress(), getMode());
+        return Objects.hash(getId(), getAddress(), getMode(), getDescription());
     }
 
     @Override
@@ -92,6 +85,7 @@ public class Slot {
                 "id=" + id +
                 ", address=" + address +
                 ", mode=" + mode +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

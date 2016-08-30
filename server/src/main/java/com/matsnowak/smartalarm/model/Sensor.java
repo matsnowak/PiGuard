@@ -1,5 +1,7 @@
 package com.matsnowak.smartalarm.model;
 
+import ch.qos.logback.core.rolling.TriggeringPolicy;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
@@ -19,7 +21,11 @@ public class Sensor {
     private String name;
 
     @Column(nullable = false)
-    private SensorType sensorType;
+    private TriggeringType triggeredOn;
+
+    @Column(nullable = false)
+    private PullResistance pullResistance = PullResistance.OFF;
+
 
     @NotNull
     @OneToOne(fetch = FetchType.EAGER)
@@ -27,10 +33,13 @@ public class Sensor {
     private Slot slot;
 
 
-    public  Sensor(String name, SensorType sensorType, Slot slot) {
+    public  Sensor(String name, Slot slot, TriggeringType triggeredOn, PullResistance pullResistance) {
         this.name = name;
-        this.sensorType = sensorType;
         this.slot = slot;
+        this.triggeredOn = triggeredOn;
+        if (pullResistance != null) {
+            this.pullResistance = pullResistance;
+        }
     }
 
     protected Sensor() {}
@@ -47,13 +56,6 @@ public class Sensor {
         this.name = name;
     }
 
-    public SensorType getSensorType() {
-        return sensorType;
-    }
-
-    public void setSensorType(SensorType sensorType) {
-        this.sensorType = sensorType;
-    }
 
     public Slot getSlot() {
         return slot;
@@ -63,6 +65,33 @@ public class Sensor {
         this.slot = slot;
     }
 
+    public TriggeringType getTriggeredOn() {
+        return triggeredOn;
+    }
+
+    public void setTriggeredOn(TriggeringType triggeredOn) {
+        this.triggeredOn = triggeredOn;
+    }
+
+    public PullResistance getPullResistance() {
+        return pullResistance;
+    }
+
+    public void setPullResistance(PullResistance pullResistance) {
+        this.pullResistance = pullResistance;
+    }
+
+    @Override
+    public String toString() {
+        return "Sensor{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", triggeredOn=" + triggeredOn +
+                ", pullResistance=" + pullResistance +
+                ", slot=" + slot +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,23 +99,13 @@ public class Sensor {
         Sensor sensor = (Sensor) o;
         return Objects.equals(getId(), sensor.getId()) &&
                 Objects.equals(getName(), sensor.getName()) &&
-                getSensorType() == sensor.getSensorType() &&
+                getTriggeredOn() == sensor.getTriggeredOn() &&
+                getPullResistance() == sensor.getPullResistance() &&
                 Objects.equals(getSlot(), sensor.getSlot());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getSensorType(), getSlot());
-    }
-
-
-    @Override
-    public String toString() {
-        return "Sensor{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", sensorType=" + sensorType +
-                ", slot=" + slot +
-                '}';
+        return Objects.hash(getId(), getName(), getTriggeredOn(), getPullResistance(), getSlot());
     }
 }

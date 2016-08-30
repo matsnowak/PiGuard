@@ -31,9 +31,9 @@ public class ZoneRepositoryTest extends AbstractRepositoryTest {
     @Test
     public void shouldSaveZoneWithRelations() throws Exception {
         //given
-        Sensor savedS1 = sensors.save(new Sensor("s1", SensorType.PIR, slots.findOne(1)));
-        Sensor savedS2 = sensors.save(new Sensor("s2", SensorType.CONTACTRON, slots.findOne(2)));
-        Sensor savedS3 = sensors.save(new Sensor("s2", SensorType.CONTACTRON, slots.findOne(3)));
+        Sensor savedS1 = sensors.save(new Sensor("s1",  slots.findOne(1), TriggeringType.EDGE, PullResistance.OFF));
+        Sensor savedS2 = sensors.save(new Sensor("s2",  slots.findOne(2), TriggeringType.EDGE, PullResistance.OFF));
+        Sensor savedS3 = sensors.save(new Sensor("s2",  slots.findOne(3), TriggeringType.EDGE, PullResistance.OFF));
 
         Signaller sig1 = signallers.save(new Signaller("sig1", slots.findOne(4)));
         Signaller sig2 = signallers.save(new Signaller("sig2", slots.findOne(5)));

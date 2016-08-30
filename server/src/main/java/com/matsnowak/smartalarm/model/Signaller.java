@@ -1,6 +1,7 @@
 package com.matsnowak.smartalarm.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Created by Mateusz on 24.06.2016.
@@ -45,5 +46,29 @@ public class Signaller {
 
     public void setSlot(Slot slot) {
         this.slot = slot;
+    }
+
+    @Override
+    public String toString() {
+        return "Signaller{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", slot=" + slot +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Signaller signaller = (Signaller) o;
+        return Objects.equals(getId(), signaller.getId()) &&
+                Objects.equals(getName(), signaller.getName()) &&
+                Objects.equals(getSlot(), signaller.getSlot());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getSlot());
     }
 }

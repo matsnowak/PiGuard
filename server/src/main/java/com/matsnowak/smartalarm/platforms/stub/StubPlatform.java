@@ -18,12 +18,6 @@ public class StubPlatform implements Platform {
 
 
     @Override
-    public void update(Slot slot) {
-        logger.debug("Updated slot " + slot);
-
-    }
-
-    @Override
     public void startMonitoring(Zone zone) {
         logger.debug("Monitoring started " + zone);
 

@@ -11,9 +11,6 @@ import java.util.Set;
  */
 public interface Platform {
 
-    // TODO not used now
-    void update(Slot slot);
-
     void startMonitoring(Zone zone);
 
     void stopMonitoring(Zone zone);

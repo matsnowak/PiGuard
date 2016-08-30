@@ -10,21 +10,13 @@ import com.matsnowak.smartalarm.model.*;
 import com.matsnowak.smartalarm.repositories.SensorRepository;
 import com.pi4j.io.gpio.*;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
-import com.pi4j.io.gpio.event.GpioPinListener;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
-import lombok.extern.log4j.Log4j;
-import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Mateusz Nowak on 17.08.2016.
@@ -48,21 +40,6 @@ public class RaspberyPi3Platform implements Platform {
 
 
     @Override
-    public void update(Slot slot) {
-//        SlotMode state = slot.getMode();
-//        if (SlotMode.INPUT.equals(state)) {
-//            getController().provisionDigitalInputPin(mapSlot(slot), PinPullResistance.PULL_DOWN);
-//        }
-//        if (SlotMode.OUTPUT.equals(state)) {
-//            getController().provisionDigitalOutputPin(mapSlot(slot), PinState.HIGH);
-//
-//        }
-//        if (SlotMode.NOT_USED.equals(state)) {
-//            getController().provisionDigitalOutputPin(mapSlot(slot), PinState.LOW); // TODO check for status
-//        }
-    }
-
-    @Override
     public void startMonitoring(Zone zone) {
         zone.getSensors().forEach(sensor -> {
             configureSensor(sensor);
@@ -76,32 +53,99 @@ public class RaspberyPi3Platform implements Platform {
     }
 
     private void configureSignaller(Signaller signaller) {
-        getController().provisionDigitalOutputPin(mapSlot(signaller.getSlot()), PinState.LOW);
+        GpioPin provisionedPin = getController().getProvisionedPin(mapSlot(signaller.getSlot()));
+        if (provisionedPin != null) {
+            getController().unprovisionPin(provisionedPin);
+            logger.debug("Unprovisioned pin " + provisionedPin);
+        }
+
+        GpioPinDigitalOutput gpioPinDigitalOutput = getController().provisionDigitalOutputPin(mapSlot(signaller.getSlot()), PinState.LOW);
+        if (gpioPinDigitalOutput != null) {
+            gpioPinDigitalOutput.setShutdownOptions(true, PinState.LOW);
+            logger.debug("Configured signaller " + signaller);
+        }
     }
 
     @Override
     public void stopMonitoring(Zone zone) {
+        logger.debug("Stop monitoring zone: " + zone);
         zone.getSensors().forEach( sensor -> {
-            GpioPin input = getController().getProvisionedPin(mapSlot(sensor.getSlot()));
-            input.removeAllListeners();
-            logger.debug("Stopped monitoring input " + sensor.getSlot());
+            GpioPin sensorPin = getController().getProvisionedPin(mapSlot(sensor.getSlot()));
+            if (sensorPin != null) {
+                sensorPin.removeAllListeners();
+                getController().unprovisionPin(sensorPin);
+                logger.debug("Stopped monitoring sensor " + sensor);
+            }
         });
 
         zone.getSignallers().forEach(signaller -> {
-            getController().provisionDigitalOutputPin(mapSlot(signaller.getSlot()), PinState.LOW);
+            GpioPin signallerPin = getController().getProvisionedPin(mapSlot(signaller.getSlot()));
+            if (signallerPin != null) {
+                getController().unprovisionPin(signallerPin);
+                logger.debug("Stopped signaller " + signaller);
+            }
+            GpioPinDigitalOutput gpioPinDigitalOutput = getController().provisionDigitalOutputPin(mapSlot(signaller.getSlot()), PinState.LOW);
+            if (gpioPinDigitalOutput != null) {
+                gpioPinDigitalOutput.setShutdownOptions(true, PinState.LOW);
+                logger.debug("Configured signaller to low state " + signaller);
+            }
         });
 
-//        gpioController.shutdown(); // TODO add application shutdown
     }
 
     @Override
     public void enableSignallers(Set<Signaller> signallers) {
         signallers.forEach(signaller -> {
-            GpioPinDigitalOutput gpioPinDigitalOutput = getController().provisionDigitalOutputPin(mapSlot(signaller.getSlot()), PinState.HIGH);
-            logger.debug("Enable signaller " + signaller);
+            GpioPin provisionedPin = getController().getProvisionedPin(mapSlot(signaller.getSlot()));
+            if (provisionedPin != null) {
+                GpioPinDigitalOutput digitalOutput = (GpioPinDigitalOutput) provisionedPin;
+                if (digitalOutput.isLow()) {
+                    digitalOutput.high();
+                }
+                logger.debug("Set pin to High" + provisionedPin);
+            } else {
+                GpioPinDigitalOutput gpioPinDigitalOutput = getController().provisionDigitalOutputPin(mapSlot(signaller.getSlot()), PinState.HIGH);
+                gpioPinDigitalOutput.setShutdownOptions(true, PinState.LOW);
+                logger.debug("Enable signaller " + signaller);
+            }
         });
     }
 
+
+    private void configureSensor(Sensor sensor) {
+
+        GpioPin provisionedSensorPin = getController().getProvisionedPin(mapSlot(sensor.getSlot()));
+        if (provisionedSensorPin != null) {
+            getController().unprovisionPin(provisionedSensorPin);
+            logger.debug("Unprovisioned pin " + provisionedSensorPin);
+        }
+
+        GpioPinDigitalInput gpioPinDigitalInput = getController().provisionDigitalInputPin(
+                mapSlot(sensor.getSlot()),
+                mapPullResistance(sensor.getPullResistance()));
+
+        if (gpioPinDigitalInput != null) {
+            listenerFor(sensor.getTriggeredOn()).ifPresent(listener -> gpioPinDigitalInput.addListener(listener));
+            gpioPinDigitalInput.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+            logger.debug("Configured sensor " + sensor);
+        }
+    }
+
+    private Optional<GpioPinListenerDigital> listenerFor(TriggeringType triggeredOn) {
+        if (TriggeringType.EDGE.equals(triggeredOn)) {
+            return Optional.of(new TriggerOnEdgePinListener());
+        }
+
+        if (TriggeringType.LOW_STATE.equals(triggeredOn)) {
+            return Optional.of(new TriggerOnLowStatePinListener());
+        }
+
+        if (TriggeringType.HIGH_STATE.equals(triggeredOn)) {
+            return Optional.of(new TriggerOnHighStatePinListener());
+        }
+
+        return Optional.empty();
+    }
 
     private GpioController getController() {
         if (gpioController == null) {
@@ -109,12 +153,6 @@ public class RaspberyPi3Platform implements Platform {
         }
 
         return gpioController;
-    }
-
-    private void configureSensor(Sensor sensor) {
-        GpioPinDigitalInput gpioPinDigitalInput = getController().provisionDigitalInputPin(mapSlot(sensor.getSlot()), PinPullResistance.PULL_DOWN);
-        gpioPinDigitalInput.addListener(new InputPinListener());
-        logger.debug("Configured sensor " + sensor + " as input");
     }
 
     private void publishEvent(SensorActivatedEvent sensorActivatedEvent) {
@@ -128,13 +166,48 @@ public class RaspberyPi3Platform implements Platform {
         return slotAddressMapping.map(slot.getAddress());
     }
 
+    private PinPullResistance mapPullResistance(PullResistance pullResistance) {
+        if (pullResistance == null) {
+            return PinPullResistance.OFF;
+        }
+
+        if (PullResistance.PULL_DOWN.equals(pullResistance)) {
+            return PinPullResistance.PULL_DOWN;
+        }
+
+        if (PullResistance.PULL_UP.equals(pullResistance)) {
+            return PinPullResistance.PULL_UP;
+        }
+
+        return PinPullResistance.OFF;
+    }
+
     public void setSlotAddressMapping(SlotAddressMapping<Pin> slotAddressMapping) {
         this.slotAddressMapping = slotAddressMapping;
     }
 
 
-    private class InputPinListener implements GpioPinListenerDigital {
+    private class TriggerOnEdgePinListener implements GpioPinListenerDigital {
+        @Override
+        public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
+            SlotAddress slotAddress = slotAddressMapping.map(event.getPin().getPin());
+            Sensor sensorByAddress = sensorRepository.findBySlotAddress(slotAddress);
+            publishEvent(Events.newSlotActivatedEvent(sensorByAddress.getId()));
+        }
+    }
 
+    private class TriggerOnLowStatePinListener implements GpioPinListenerDigital {
+        @Override
+        public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
+            if (event.getState() == PinState.LOW) {
+                SlotAddress slotAddress = slotAddressMapping.map(event.getPin().getPin());
+                Sensor sensorByAddress = sensorRepository.findBySlotAddress(slotAddress);
+                publishEvent(Events.newSlotActivatedEvent(sensorByAddress.getId()));
+            }
+        }
+    }
+
+    private class TriggerOnHighStatePinListener implements GpioPinListenerDigital {
         @Override
         public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
             if (event.getState() == PinState.HIGH) {
@@ -144,4 +217,5 @@ public class RaspberyPi3Platform implements Platform {
             }
         }
     }
+
 }
