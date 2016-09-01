@@ -18,20 +18,15 @@ public class Slot {
     private SlotAddress address;
 
 
-    // TODO should be deprecated
-    @Column(nullable = false)
-    private SlotMode mode;
-
 
     @Column(nullable = true)
     private String description;
 
-    public Slot(SlotAddress address, SlotMode mode) {
+    public Slot(SlotAddress address) {
         this.address = address;
-        this.mode = mode;
     }
-    public Slot(SlotAddress address, SlotMode state, String description) {
-        this(address, state);
+    public Slot(SlotAddress address, String description) {
+        this(address);
         this.setDescription(description);
     }
 
@@ -41,15 +36,6 @@ public class Slot {
     public Integer getId() {
         return id;
     }
-
-    public SlotMode getMode() {
-        return mode;
-    }
-
-    public void setMode(SlotMode mode) {
-        this.mode = mode;
-    }
-
 
     public SlotAddress getAddress() {
         return address;
@@ -64,28 +50,27 @@ public class Slot {
     }
 
     @Override
+    public String toString() {
+        return "Slot{" +
+                "id=" + id +
+                ", address=" + address +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Slot slot = (Slot) o;
         return Objects.equals(getId(), slot.getId()) &&
                 getAddress() == slot.getAddress() &&
-                getMode() == slot.getMode() &&
                 Objects.equals(getDescription(), slot.getDescription());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getAddress(), getMode(), getDescription());
+        return Objects.hash(getId(), getAddress(), getDescription());
     }
 
-    @Override
-    public String toString() {
-        return "Slot{" +
-                "id=" + id +
-                ", address=" + address +
-                ", mode=" + mode +
-                ", description='" + description + '\'' +
-                '}';
-    }
 }

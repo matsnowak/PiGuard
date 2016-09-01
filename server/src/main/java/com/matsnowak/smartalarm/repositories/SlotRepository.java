@@ -13,15 +13,21 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 @RepositoryRestResource(collectionResourceRel = ApiUrls.API_SLOTS, path = ApiUrls.API_SLOTS)
 public interface SlotRepository extends CrudRepository<Slot, Integer> {
-   @RestResource(exported = false)
+    @RestResource(exported = false)
+    @Override
     void delete(Integer id);
 
     @RestResource(exported = false)
+    @Override
     void delete(Slot entity);
 
+    @RestResource(exported = false)
+    @Override
+    Slot save(Slot entity);
 
     @RestResource(exported = false)
-    void deleteAll();
+    @Override
+    <S extends Slot> Iterable<S> save(Iterable<S> entities);
 
     Slot findByAddress(SlotAddress slotAddress);
 }

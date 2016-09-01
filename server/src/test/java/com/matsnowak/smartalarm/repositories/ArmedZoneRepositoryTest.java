@@ -28,9 +28,9 @@ public class ArmedZoneRepositoryTest extends AbstractRepositoryTest{
     @Test
     public void shouldNotDeleteZoneWhenArmedZoneDeleted() throws Exception {
         // given
-        Zone zone1 = zoneRepository.save(Zone.create("zone1", Collections.EMPTY_SET, Collections.EMPTY_SET));
-        zoneRepository.save(Zone.create("zone2", Collections.EMPTY_SET, Collections.EMPTY_SET));
-        zoneRepository.save(Zone.create("zone3", Collections.EMPTY_SET, Collections.EMPTY_SET));
+        Zone zone1 = zoneRepository.save(Zone.create("zone1", Collections.emptySet(), Collections.emptySet()));
+        zoneRepository.save(Zone.create("zone2", Collections.emptySet(), Collections.emptySet()));
+        zoneRepository.save(Zone.create("zone3", Collections.emptySet(), Collections.emptySet()));
 
         ArmedZone savedZone = armedZoneRepository.save(ArmedZone.create(zone1, LocalDateTime.now()));
 

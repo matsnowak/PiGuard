@@ -2,13 +2,10 @@ package com.matsnowak.smartalarm.controllers;
 
 import com.matsnowak.smartalarm.model.Slot;
 import com.matsnowak.smartalarm.model.SlotAddress;
-import com.matsnowak.smartalarm.model.SlotMode;
 import io.restassured.http.ContentType;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.matsnowak.smartalarm.model.SlotAddress.*;
-import static com.matsnowak.smartalarm.model.SlotMode.*;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static org.apache.http.HttpStatus.*;
@@ -34,8 +31,7 @@ public class SlotControllerTest  extends AbstractControllerTest{
                 .get(mapping("/slots/1"))
         .then()
                 .statusCode(SC_OK)
-                .body("address", equalTo(SlotAddress.SLOT_1.name())); // TODO check
-//                .body("state", equalTo(NOT_USED.name()));
+                .body("address", equalTo(SlotAddress.SLOT_1.name()));
 
 
     }
@@ -53,7 +49,7 @@ public class SlotControllerTest  extends AbstractControllerTest{
     public void save_by_PUT_onCollection_notAllowed_405() throws Exception {
         given()
                 .contentType(ContentType.JSON)
-                .body(slot(SLOT_11, INPUT))
+                .body(slot(SLOT_11))
         .when()
                 .put(mapping("/slots"))
         .then()
@@ -64,7 +60,7 @@ public class SlotControllerTest  extends AbstractControllerTest{
     public void save_by_PUT_onEntity_existing_notAllowed_405() throws Exception {
         given()
                 .contentType(ContentType.JSON)
-                .body(slot(SLOT_2, INPUT))
+                .body(slot(SLOT_2))
         .when()
                 .put(mapping("/slots/2"))
         .then()
@@ -75,7 +71,7 @@ public class SlotControllerTest  extends AbstractControllerTest{
     public void save_by_PUT_onEntity_notExisting_notAllowed_405() throws Exception {
         given()
                 .contentType(ContentType.JSON)
-                .body(slot(SLOT_12, INPUT))
+                .body(slot(SLOT_12))
         .when()
                 .put(mapping("/slots/199"))
         .then()
@@ -86,7 +82,7 @@ public class SlotControllerTest  extends AbstractControllerTest{
     public void save_by__POST_onCollection_notAllowed_405() throws Exception {
         given()
                 .contentType(ContentType.JSON)
-                .body(slot(SLOT_13, INPUT))
+                .body(slot(SLOT_13))
         .when()
                 .post(mapping("/slots"))
         .then()
@@ -97,7 +93,7 @@ public class SlotControllerTest  extends AbstractControllerTest{
     public void save_by_POST_onEntity_existing_notAllowed_405() throws Exception {
         given()
                 .contentType(ContentType.JSON)
-                .body(slot(SLOT_14, INPUT))
+                .body(slot(SLOT_14))
         .when()
                 .post(mapping("/slots/3"))
         .then()
@@ -108,7 +104,7 @@ public class SlotControllerTest  extends AbstractControllerTest{
     public void save_by_POST_onEntity_notExisting_notAllowed_405() throws Exception {
         given()
                 .contentType(ContentType.JSON)
-                .body(slot(SLOT_15, INPUT))
+                .body(slot(SLOT_15))
         .when()
                 .post(mapping("/slots/299"))
         .then()
@@ -123,21 +119,6 @@ public class SlotControllerTest  extends AbstractControllerTest{
                 .statusCode(SC_METHOD_NOT_ALLOWED);
     }
 
-    @Ignore // TODO check
-    @Test
-    public void save_by_PATCH_onEntity_existing_onlyState_OK_200() throws Exception {
-        given()
-                .contentType(ContentType.JSON)
-                .body("{ \"state\" : \"INPUT\" }")
-        .when()
-                .patch(mapping("/slots/4"))
-        .then()
-                .statusCode(SC_OK)
-                .body("state", equalTo(INPUT.name()))
-                .body("address", equalTo(SLOT_4.name()));
-    }
-
-
     @Test
     public void save_by_PATCH_onEntity_notExisting_NotFound_404() throws Exception {
         given()
@@ -151,14 +132,14 @@ public class SlotControllerTest  extends AbstractControllerTest{
     }
 
     @Test
-    public void save_by_PATCH_onEntity_existing_addressChanged_badRequest_400() throws Exception {
+    public void save_by_PATCH_onEntity_existing_addressChanged_notAllowed_405() throws Exception {
         given()
                 .contentType(ContentType.JSON)
                 .body("{ \"address\" : \"SLOT_16\" }")
         .when()
                 .patch(mapping("/slots/5"))
         .then()
-                .statusCode(SC_BAD_REQUEST);
+                .statusCode(SC_METHOD_NOT_ALLOWED);
     }
 
     @Test
@@ -178,8 +159,8 @@ public class SlotControllerTest  extends AbstractControllerTest{
     }
 
 
-    private Slot slot(SlotAddress address, SlotMode state) {
-        return new Slot(address, state);
+    private Slot slot(SlotAddress address) {
+        return new Slot(address);
     }
 
 
