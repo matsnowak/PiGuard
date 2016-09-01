@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Created by Mateusz Nowak on 24.08.2016.
  */
+
 public class ArmedZoneRepositoryTest extends AbstractRepositoryTest{
 
     @Autowired
