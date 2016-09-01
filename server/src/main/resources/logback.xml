@@ -21,7 +21,7 @@
         <appender-ref ref="console" />
     </logger>
 
-    <logger name="com.matsnowak.smartalarm" level="debug" additivity="false">
+    <logger name="com.matsnowak.piguard" level="debug" additivity="false">
         <appender-ref ref="console" />
     </logger>
 
