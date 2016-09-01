@@ -13,16 +13,35 @@
             <pattern>%-5level %logger{0} - %msg%n</pattern>
         </encoder>
     </appender>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file> log-all.txt </file>
+        <append>true</append>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="piguardFile" class="ch.qos.logback.core.FileAppender">
+        <file> log-piguard.txt </file>
+        <append>true</append>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
 
-    <logger name="org.hibernate.SQL" level="DEBUG" />
-    <logger name="org.hibernate.type" level="TRACE" />
+
+
+    <!--<logger name="org.hibernate.SQL" level="DEBUG" />-->
+    <!--<logger name="org.hibernate.type" level="TRACE" />-->
 
     <logger name="org.springframework" level="warn" additivity="false">
         <appender-ref ref="console" />
+        <appender-ref ref="FILE" />
     </logger>
 
-    <logger name="com.matsnowak.piguard" level="debug" additivity="false">
+    <logger name="com.matsnowak.piguard" level="trace" additivity="false">
         <appender-ref ref="console" />
+        <appender-ref ref="FILE" />
+        <appender-ref ref="piguardFile" />
     </logger>
 
 
