@@ -4,8 +4,10 @@ package com.matsnowak.piguard.main;
  * Created by Mateusz on 20.06.2016.
  */
 
+import com.matsnowak.piguard.model.Settings;
 import com.matsnowak.piguard.model.Slot;
 import com.matsnowak.piguard.model.SlotAddress;
+import com.matsnowak.piguard.repositories.SettingsRepository;
 import com.matsnowak.piguard.repositories.SlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,9 +25,23 @@ public class AutoConfig {
     @Autowired
     SlotRepository slotRepository;
 
+    @Autowired
+    SettingsRepository settingsRepository;
+
 
     public void init() {
         slotRepository.save(slots());
+        initDefaultSettings();
+    }
+
+    private void initDefaultSettings() {
+        Settings one = settingsRepository.findOne(1);
+        if (one == null) {
+            one = new Settings();
+            one.setDisarmDelay(30);
+            one.setExitDelay(45);
+            settingsRepository.save(one);
+        }
     }
 
     public List<Slot> slots() {
