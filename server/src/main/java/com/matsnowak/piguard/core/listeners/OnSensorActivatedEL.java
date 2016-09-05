@@ -52,6 +52,7 @@ public class OnSensorActivatedEL implements EventListener<SensorActivatedEvent> 
         logger.debug("armedZones " + armedZones);
         List<ArmedZone> armedZonesContainingSensor = armedZones.stream()
                 .filter(armedZone -> armedZone.getZone().getSensors().contains(activatedSensor))
+                .filter(armedZone -> event.getCreated().isAfter(armedZone.getStartGuardFrom()))
                 .collect(Collectors.toList());
 
         armedZonesContainingSensor.forEach(armedZone -> {

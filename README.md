@@ -26,12 +26,15 @@ REST Api
 
 Zalozenia
 -----
+Klasyczne api restowe + HATEOS. 
+
 
 Zasoby
 ------
 
 ###Slot
 Reprezentuje pin GPIO do ktorego podpiety jest sygnalizator badz sensor.
+pola 
 
 
 
