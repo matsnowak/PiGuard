@@ -1,0 +1,24 @@
+.Login-background {
+  height: 100%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Login-box {
+  max-width: 50%;
+  text-align: center;
+}
+
+.Login-logo {
+  background-image: url(../../images/raspberry.png);
+  background-size: cover;
+}
+/*
+#305252
+#DAE3E5
+
+
+#00BCD4
+*/
