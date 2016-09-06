@@ -5,7 +5,7 @@ import LoginBox from '../../components/LoginBox/LoginBox';
 const style = {
   height: 50,
   width: 300,
-  margin: 20,
+  margin: 5,
   textAlign: 'center',
   display: 'block',
 };

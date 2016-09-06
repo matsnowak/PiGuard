@@ -1,5 +1,8 @@
 .App {
+  height: 100%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .App-logo {
@@ -16,6 +19,11 @@
 
 .App-intro {
   font-size: large;
+}
+
+.App-logo {
+  background-image: url(../../images/raspberry.png);
+  background-size: cover;
 }
 
 @keyframes App-logo-spin {
