@@ -9,18 +9,18 @@ class SensorDialog extends Component {
   state = {
     name: '',
     triggerIndex: null,
-    resistanceIndex: null
+    resistanceIndex: null,
+    slotIndex: null,
   };
 
   getTriggers = () => {
-    // todo: take from server
     return this.props.piguard.triggers;
   };
 
   getResistances = () => {
-    // todo: take from server
     return this.props.piguard.resistances;
   };
+
 
   handleChangeName = (event) => {
     this.setState({
@@ -32,6 +32,8 @@ class SensorDialog extends Component {
 
   handleChangeResistance = (event, index, value) => this.setState({resistanceIndex:value});
 
+  handleChangeSlot = (event, index, value) => this.setState({slotIndex:value});
+
   handleClose = () => {
     this.props.setVisibility(false);
   };
@@ -41,7 +43,7 @@ class SensorDialog extends Component {
   };
 
   isSubmitDisabled = () => {
-    return this.state.name === '' && this.state.triggerIndex === null && this.state.resistanceIndex === null;
+    return this.state.name === '' || this.state.triggerIndex === null || this.state.resistanceIndex === null;
   };
 
   render() {
@@ -62,11 +64,22 @@ class SensorDialog extends Component {
     const triggers = this.getTriggers();
     const resistances = this.getResistances();
 
+    const slots = [];
+    for (let i = 0; i < this.props.piguard.slots.length; i++) {
+      slots.push(<MenuItem value={i} key={i} primaryText={this.props.piguard.slots[i].description} secondaryText={this.props.piguard.slots[i].address} />)
+    }
 
     return (
       <Dialog
         title="Create Sensor"
         actions={actions}
+        contentStyle={{
+          width: 350,
+          maxWidth: 350,
+        }}
+        bodyStyle={{
+          textAlign: 'center'
+        }}
         modal={true}
         open={this.props.open}
       >
@@ -75,17 +88,23 @@ class SensorDialog extends Component {
           onChange={this.handleChangeName}
           hintText="Name"
         />
-        <SelectField hintText="Triggered On" value={this.state.triggerIndex} onChange={this.handleChangeTrigger}>
+        <SelectField style={{ textAlign: 'left'}} hintText="Triggered On" value={this.state.triggerIndex} onChange={this.handleChangeTrigger}>
           <MenuItem value={0} primaryText={triggers[0]} />
           <MenuItem value={1} primaryText={triggers[1]} />
           <MenuItem value={2} primaryText={triggers[2]} />
         </SelectField>
 
-        <SelectField hintText="Pull resistance" value={this.state.resistanceIndex} onChange={this.handleChangeResistance}>
+        <SelectField style={{ textAlign: 'left'}} hintText="Pull resistance" value={this.state.resistanceIndex} onChange={this.handleChangeResistance}>
           <MenuItem value={0} primaryText={resistances[0]} />
           <MenuItem value={1} primaryText={resistances[1]} />
           <MenuItem value={2} primaryText={resistances[2]} />
         </SelectField>
+
+        <SelectField style={{ textAlign: 'left'}} hintText="Slot" value={this.state.slotIndex} onChange={this.handleChangeSlot}>
+          {slots}
+        </SelectField>
+
+
       </Dialog>
 
     );

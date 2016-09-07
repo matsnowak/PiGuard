@@ -23,6 +23,7 @@ const style = {
 class App extends AuthorizedComponent {
 
   componentWillMount() {
+    this.props.actions.loadSlots();
     this.props.actions.loadSensorsProfile();
     this.props.actions.loadSensors();
   }

@@ -70,5 +70,6 @@ export default {
   setZoneWindowVisibility,
   setSensorWindowVisibility,
   loadSensors,
-  loadSensorsProfile
+  loadSensorsProfile,
+  loadSlots
 }
