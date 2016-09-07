@@ -63,7 +63,7 @@ class AppBar extends Component {
             </Tabs>
           </div>
           <div style={{ flex: 1, verticalAlign: 'middle' }}>
-            <AddButton />
+            <AddButton actions={this.props.actions} />
           </div>
       </Paper>
 

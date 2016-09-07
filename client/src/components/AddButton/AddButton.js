@@ -13,9 +13,9 @@ class AddButton extends Component {
         anchorOrigin={{horizontal: 'right', vertical: 'top'}}
         targetOrigin={{horizontal: 'right', vertical: 'top'}}
       >
-        <MenuItem primaryText="Signaller" />
-        <MenuItem primaryText="Sensor" />
-        <MenuItem primaryText="Zone" />
+        <MenuItem primaryText="Signaller" onClick={() => this.props.actions.setSignallerWindowVisibility(true)} />
+        <MenuItem primaryText="Sensor" onClick={() => this.props.actions.setSensorWindowVisibility(true)} />
+        <MenuItem primaryText="Zone" onClick={() => this.props.actions.setZoneWindowVisibility(true)} />
       </IconMenu>
 
     );
