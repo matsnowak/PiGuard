@@ -24,6 +24,10 @@ public class Zone {
     @JoinTable(name="ZONE_SIGNALLER")
     private Set<Signaller> signallers = new LinkedHashSet<>();
 
+    private Set<Integer> sensorsId = new LinkedHashSet<>();
+
+    private Set<Integer> signallersId = new LinkedHashSet<>();
+
     public static Zone create(String name, Set<Sensor> sensors, Set<Signaller> signallers) {
         Zone zone = new Zone();
         zone.setName(name);
@@ -55,6 +59,8 @@ public class Zone {
     }
 
     public void setSensors(Set<Sensor> sensors) {
+        sensors.clear();
+        sensors.forEach(item -> sensorsId.add(item.getId()));
         this.sensors = sensors;
     }
 
@@ -63,6 +69,8 @@ public class Zone {
     }
 
     public void setSignallers(Set<Signaller> signallers) {
+        signallersId.clear();
+        signallers.forEach(item -> signallersId.add(item.getId()));
         this.signallers = signallers;
     }
 
