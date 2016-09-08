@@ -29,6 +29,10 @@ class SignallerDialog extends Component {
 
   handleCreate = () => {
     this.props.setVisibility(false);
+    this.props.create({
+      name: this.state.name,
+      slot: this.props.piguard.freeSlots[this.state.slotIndex].link
+    });
   };
 
   render() {
@@ -48,8 +52,8 @@ class SignallerDialog extends Component {
 
 
     const slots = [];
-    for (let i = 0; i < this.props.piguard.slots.length; i++) {
-      slots.push(<MenuItem value={i} key={i} primaryText={this.props.piguard.slots[i].description} secondaryText={this.props.piguard.slots[i].address} />)
+    for (let i = 0; i < this.props.piguard.freeSlots.length; i++) {
+      slots.push(<MenuItem value={i} key={i} primaryText={this.props.piguard.freeSlots[i].description} secondaryText={this.props.piguard.freeSlots[i].address} />)
     }
 
 

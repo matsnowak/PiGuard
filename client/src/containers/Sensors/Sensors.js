@@ -8,22 +8,10 @@ class Sensors extends Component {
   }
 
   render() {
-    // this.props.piguard.sensors.forEach(sensor => {
-    //   const why = this.props.piguard.slots.find(slot => slot.id === sensor.slotId);
-    //   if (why === undefined) {
-    //     console.log('Id: ' + sensor.slotId);
-    //   } else {
-    //     console.log(why);
-    //   }
-    //
-    //   console.log('----------------')
-    // })
-
-
     return (
-      <div>
+      <div style={{ marginTop: '20px', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
         {this.props.piguard.sensors.map(sensor => (
-          <Card>
+          <Card style={{ display: 'flex'}}>
             <CardHeader
               title={sensor.name}
             />
@@ -34,7 +22,7 @@ class Sensors extends Component {
               {sensor.pullResistance}
             </CardText>
             <CardText>
-
+              {this.props.piguard.slots.find(slot => slot.id === sensor.slotId).description}
             </CardText>
           </Card>
         ))}

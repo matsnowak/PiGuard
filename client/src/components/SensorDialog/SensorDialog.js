@@ -44,7 +44,7 @@ class SensorDialog extends Component {
       name: this.state.name,
       triggeredOn: this.props.piguard.triggers[this.state.triggerIndex],
       pullResistance: this.props.piguard.resistances[this.state.resistanceIndex],
-      slot: this.props.piguard.slots[this.state.slotIndex].link
+      slot: this.props.piguard.freeSlots[this.state.slotIndex].link
     });
   };
 
@@ -71,8 +71,8 @@ class SensorDialog extends Component {
     const resistances = this.getResistances();
 
     const slots = [];
-    for (let i = 0; i < this.props.piguard.slots.length; i++) {
-      slots.push(<MenuItem value={i} key={i} primaryText={this.props.piguard.slots[i].description} secondaryText={this.props.piguard.slots[i].address} />)
+    for (let i = 0; i < this.props.piguard.freeSlots.length; i++) {
+      slots.push(<MenuItem value={i} key={i} primaryText={this.props.piguard.freeSlots[i].description} secondaryText={this.props.piguard.freeSlots[i].address} />)
     }
 
     return (

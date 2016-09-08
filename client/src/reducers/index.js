@@ -25,30 +25,38 @@ const defaultDefinitions = {
   sensors: [],
   signallers: [],
   zones: [],
-  slots: generateDefaultSlots()
+  freeSlots: [],
+  slots: [],
 };
 
 function convertSensor(sensor) {
-  const splitted = sensor._links.slot.href.split('/');
   return {
+    id: sensor.id,
     name: sensor.name,
     triggeredOn: sensor.triggeredOn,
     pullResistance: sensor.pullResistance,
     self: sensor._links.self.href,
     slot: sensor._links.slot.href,
-    slotId: parseInt(splitted[splitted.length - 2]),
+    slotId: sensor.slotId,
+  }
+}
+
+function convertSignaller(signaller) {
+  return {
+    id: signaller.id,
+    name: signaller.name,
+    slotId: signaller.slotId,
   }
 }
 
 function convertSlot(slot) {
-  const splitted = slot._links.self.href.split('/');
 
   return {
     address: slot.address,
     description: slot.description,
     taken: false,
     link: slot._links.self.href,
-    id: parseInt(splitted[splitted.length - 1])
+    id: slot.id
   };
 }
 
@@ -57,8 +65,26 @@ function mapSensors(state, sensors) {
   return Object.assign({}, state, { sensors: convertedSensors });
 }
 
+function mapFreeSlots(state, slots) {
+  const loadedSlots = slots._embedded.slots.map(slot => convertSlot(slot));
+
+  return Object.assign({}, state, { freeSlots: loadedSlots });
+}
+
 function mapSensorsProfile(state, sensorsProfile) {
   return state;
+}
+
+function removeSlot(state, slotId) {
+  const filteredSlots = state.freeSlots.filter(slot => slot.id !== slotId);
+
+  return Object.assign({}, state, { freeSlots: filteredSlots });
+}
+
+function mapSignallers(state, signallers) {
+  const loadedSignallers = signallers._embedded.signallers.map(signaller => convertSignaller(signaller));
+
+  return Object.assign({}, state, { signallers: loadedSignallers });
 }
 
 function mapSlots(state, slots) {
@@ -70,9 +96,12 @@ function mapSlots(state, slots) {
 const piguard = (state = defaultDefinitions, action) => {
   switch(action.type) {
     case actions.LOAD_SENSORS: return mapSensors(state, action.sensors);
+    case actions.LOAD_SIGNALLERS: return mapSignallers(state, action.signallers);
     case actions.LOAD_SENSORS_PROFILE: return mapSensorsProfile(state, action.sensorsProfile);
     case actions.LOAD_SLOTS: return mapSlots(state, action.slots);
-    case actions.CREATE_SENSOR: return Object.assign({}, state, { sensors: state.sensors.concat([convertSensor(action.sensor)])});
+    case actions.CREATE_SENSOR: return removeSlot(Object.assign({}, state, { sensors: state.sensors.concat([convertSensor(action.sensor)])}), action.sensor.slotId);
+    case actions.CREATE_SIGNALLER: return removeSlot(Object.assign({}, state, { signallers: state.signallers.concat([convertSignaller(action.signaller)])}), action.signaller.slotId);
+    case actions.LOAD_FREE_SLOTS: return mapFreeSlots(state, action.slots);
     default: return state;
   }
 };

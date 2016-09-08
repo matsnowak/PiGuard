@@ -23,15 +23,19 @@ const style = {
 class App extends AuthorizedComponent {
 
   componentWillMount() {
+    this.props.actions.loadFreeSlots();
     this.props.actions.loadSlots();
-    this.props.actions.loadSensorsProfile();
+
+    this.props.actions.loadSignallers();
     this.props.actions.loadSensors();
   }
 
   render() {
 
 
-
+    if (this.props.piguard.slots.length === 0) {
+      return null;
+    }
 
     return (
       <div className="App">
@@ -43,7 +47,7 @@ class App extends AuthorizedComponent {
         </div>
 
         { this.props.visibilities.sensorWindow === false ? null : <SensorDialog piguard={this.props.piguard} open={this.props.visibilities.sensorWindow} setVisibility={this.props.actions.setSensorWindowVisibility} create={this.props.actions.createSensor} />}
-        { this.props.visibilities.signallerWindow === false ? null : <SignallerDialog piguard={this.props.piguard} open={this.props.visibilities.signallerWindow} setVisibility={this.props.actions.setSignallerWindowVisibility} />}
+        { this.props.visibilities.signallerWindow === false ? null : <SignallerDialog piguard={this.props.piguard} open={this.props.visibilities.signallerWindow} setVisibility={this.props.actions.setSignallerWindowVisibility} create={this.props.actions.createSignaller} />}
         { this.props.visibilities.zoneWindow === false ? null : <ZoneDialog piguard={this.props.piguard} open={this.props.visibilities.zoneWindow} setVisibility={this.props.actions.setZoneWindowVisibility} />}
 
       </div>

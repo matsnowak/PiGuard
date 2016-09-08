@@ -24,8 +24,10 @@ public class Zone {
     @JoinTable(name="ZONE_SIGNALLER")
     private Set<Signaller> signallers = new LinkedHashSet<>();
 
+    @Transient
     private Set<Integer> sensorsId = new LinkedHashSet<>();
 
+    @Transient
     private Set<Integer> signallersId = new LinkedHashSet<>();
 
     public static Zone create(String name, Set<Sensor> sensors, Set<Signaller> signallers) {
