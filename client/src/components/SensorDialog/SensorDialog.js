@@ -40,6 +40,12 @@ class SensorDialog extends Component {
 
   handleCreate = () => {
     this.props.setVisibility(false);
+    this.props.create({
+      name: this.state.name,
+      triggeredOn: this.props.piguard.triggers[this.state.triggerIndex],
+      pullResistance: this.props.piguard.resistances[this.state.resistanceIndex],
+      slot: this.props.piguard.slots[this.state.slotIndex].link
+    });
   };
 
   isSubmitDisabled = () => {

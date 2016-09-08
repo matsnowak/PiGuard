@@ -39,10 +39,10 @@ class App extends AuthorizedComponent {
           <AppBar location={this.props.location.pathname} actions={this.props.actions} />
         </div>
         <div style={{ flex: 5 }}>
-          {this.props.children}
+          {React.cloneElement(this.props.children, { actions: this.props.actions, piguard: this.props.piguard })}
         </div>
 
-        { this.props.visibilities.sensorWindow === false ? null : <SensorDialog piguard={this.props.piguard} open={this.props.visibilities.sensorWindow} setVisibility={this.props.actions.setSensorWindowVisibility} />}
+        { this.props.visibilities.sensorWindow === false ? null : <SensorDialog piguard={this.props.piguard} open={this.props.visibilities.sensorWindow} setVisibility={this.props.actions.setSensorWindowVisibility} create={this.props.actions.createSensor} />}
         { this.props.visibilities.signallerWindow === false ? null : <SignallerDialog piguard={this.props.piguard} open={this.props.visibilities.signallerWindow} setVisibility={this.props.actions.setSignallerWindowVisibility} />}
         { this.props.visibilities.zoneWindow === false ? null : <ZoneDialog piguard={this.props.piguard} open={this.props.visibilities.zoneWindow} setVisibility={this.props.actions.setZoneWindowVisibility} />}
 

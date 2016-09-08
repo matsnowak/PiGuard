@@ -1,4 +1,4 @@
-import { getSensors, getSensorsProfile, getSlots } from '../services/restService';
+import { getSensors, getSensorsProfile, getSlots, getFreeSlots, postSensor } from '../services/restService';
 
 export const SIGNALLER_WINDOW_VISIBILITY = 'SIGNALLER_WINDOW_VISIBILITY';
 export const ZONE_WINDOW_VISIBILITY = 'ZONE_WINDOW_VISIBILITY';
@@ -13,10 +13,21 @@ export const LOAD_ZONES = 'LOAD_ZONES';
 export const LOAD_SENSORS = 'LOAD_SENSORS';
 export const LOAD_SENSORS_PROFILE = 'LOAD_SENSORS_PROFILE';
 export const LOAD_SLOTS = 'LOAD_SLOTS';
+export const CREATE_SENSOR = 'CREATE_SENSOR';
+
+function createSensor(sensor) {
+  return dispatch => {
+    postSensor(sensor)
+      .then(() => dispatch({
+        type: CREATE_SENSOR,
+        sensor
+      }))
+  }
+}
 
 function loadSlots() {
   return dispatch => {
-    getSlots()
+    getFreeSlots()
       .then(slots => dispatch({
         type: LOAD_SLOTS,
         slots
@@ -71,5 +82,6 @@ export default {
   setSensorWindowVisibility,
   loadSensors,
   loadSensorsProfile,
-  loadSlots
+  loadSlots,
+  createSensor
 }

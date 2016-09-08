@@ -28,9 +28,33 @@ const defaultDefinitions = {
   slots: generateDefaultSlots()
 };
 
+function convertSensor(sensor) {
+  const splitted = sensor._links.slot.href.split('/');
+  return {
+    name: sensor.name,
+    triggeredOn: sensor.triggeredOn,
+    pullResistance: sensor.pullResistance,
+    self: sensor._links.self.href,
+    slot: sensor._links.slot.href,
+    slotId: parseInt(splitted[splitted.length - 2]),
+  }
+}
+
+function convertSlot(slot) {
+  const splitted = slot._links.self.href.split('/');
+
+  return {
+    address: slot.address,
+    description: slot.description,
+    taken: false,
+    link: slot._links.self.href,
+    id: parseInt(splitted[splitted.length - 1])
+  };
+}
+
 function mapSensors(state, sensors) {
-  console.log(sensors);
-  return state;
+  const convertedSensors = sensors._embedded.sensors.map(sensor => convertSensor(sensor));
+  return Object.assign({}, state, { sensors: convertedSensors });
 }
 
 function mapSensorsProfile(state, sensorsProfile) {
@@ -38,12 +62,7 @@ function mapSensorsProfile(state, sensorsProfile) {
 }
 
 function mapSlots(state, slots) {
-  const loadedSlots = slots._embedded.slots.map(slot => ({
-    address: slot.address,
-    description: slot.description,
-    taken: false,
-    link: slot._links.self.href
-  }));
+  const loadedSlots = slots._embedded.slots.map(slot => convertSlot(slot));
 
   return Object.assign({}, state, { slots: loadedSlots });
 }
@@ -53,6 +72,7 @@ const piguard = (state = defaultDefinitions, action) => {
     case actions.LOAD_SENSORS: return mapSensors(state, action.sensors);
     case actions.LOAD_SENSORS_PROFILE: return mapSensorsProfile(state, action.sensorsProfile);
     case actions.LOAD_SLOTS: return mapSlots(state, action.slots);
+    case actions.CREATE_SENSOR: return Object.assign({}, state, { sensors: state.sensors.concat([convertSensor(action.sensor)])});
     default: return state;
   }
 };
