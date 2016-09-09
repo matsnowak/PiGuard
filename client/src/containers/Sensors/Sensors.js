@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
 
 class Sensors extends Component {
 
@@ -9,21 +10,24 @@ class Sensors extends Component {
 
   render() {
     return (
-      <div style={{ marginTop: '20px', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+      <div style={{ marginTop: '20px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
         {this.props.piguard.sensors.map(sensor => (
-          <Card style={{ display: 'flex'}}>
+          <Card key={sensor.id} style={{ display: 'flex', marginRight: '20px' }}>
             <CardHeader
-              title={sensor.name}
+              title={`Name: ${sensor.name}`}
             />
-            <CardText>
-              {sensor.triggeredOn}
+            <CardText style={{ textAlign: 'left' }}>
+              Triggered on: {sensor.triggeredOn}
             </CardText>
-            <CardText>
-              {sensor.pullResistance}
+            <CardText style={{ textAlign: 'left' }}>
+              Pull resistance: {sensor.pullResistance}
             </CardText>
-            <CardText>
-              {this.props.piguard.slots.find(slot => slot.id === sensor.slotId).description}
+            <CardText style={{ textAlign: 'left' }}>
+              Slot: {this.props.piguard.slots.find(slot => slot.id === sensor.slotId).description}
             </CardText>
+            <CardActions>
+              <FlatButton secondary label="Remove sensor" onClick={() => this.props.actions.removeSensor(sensor)}/>
+            </CardActions>
           </Card>
         ))}
       </div>

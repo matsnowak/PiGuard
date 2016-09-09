@@ -24,11 +24,9 @@ public class Zone {
     @JoinTable(name="ZONE_SIGNALLER")
     private Set<Signaller> signallers = new LinkedHashSet<>();
 
-    @Transient
-    private Set<Integer> sensorsId = new LinkedHashSet<>();
+    private List<Integer> sensorsId = new ArrayList<>();
 
-    @Transient
-    private Set<Integer> signallersId = new LinkedHashSet<>();
+    private List<Integer> signallersId = new ArrayList<>();
 
     public static Zone create(String name, Set<Sensor> sensors, Set<Signaller> signallers) {
         Zone zone = new Zone();
@@ -61,7 +59,7 @@ public class Zone {
     }
 
     public void setSensors(Set<Sensor> sensors) {
-        sensors.clear();
+        sensorsId.clear();
         sensors.forEach(item -> sensorsId.add(item.getId()));
         this.sensors = sensors;
     }

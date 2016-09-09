@@ -1,4 +1,4 @@
-import { getSensors, getSensorsProfile, getSlots, getFreeSlots, postSensor, postSignaller, getSignallers } from '../services/restService';
+import { getSensors, getSensorsProfile, getSlots, getFreeSlots, postSensor, postSignaller, getSignallers, deleteSensor, deleteSignaller, postZone } from '../services/restService';
 
 export const SIGNALLER_WINDOW_VISIBILITY = 'SIGNALLER_WINDOW_VISIBILITY';
 export const ZONE_WINDOW_VISIBILITY = 'ZONE_WINDOW_VISIBILITY';
@@ -16,6 +16,9 @@ export const LOAD_SLOTS = 'LOAD_SLOTS';
 export const LOAD_FREE_SLOTS = 'LOAD_FREE_SLOTS';
 export const CREATE_SENSOR = 'CREATE_SENSOR';
 export const CREATE_SIGNALLER = 'CREATE_SIGNALLER';
+export const REMOVE_SENSOR = 'REMOVE_SENSOR';
+export const REMOVE_SIGNALLER = 'REMOVE_SIGNALLER';
+export const CREATE_ZONE = 'CREATE_ZONE';
 
 function createSensor(sensor) {
   return dispatch => {
@@ -26,6 +29,18 @@ function createSensor(sensor) {
           sensor: createdSensor
         })
 
+      })
+  }
+}
+
+function createZone(zone) {
+  return dispatch => {
+    postZone(zone)
+      .then((createdZone) => {
+        return dispatch({
+          type: CREATE_ZONE,
+          zone: createdZone
+        })
       })
   }
 }
@@ -83,6 +98,26 @@ function loadSensorsProfile() {
   }
 }
 
+function removeSensor(sensor) {
+  return dispatch => {
+    deleteSensor(sensor.id)
+      .then(() => dispatch({
+        type: REMOVE_SENSOR,
+        sensor,
+      }))
+  }
+}
+
+function removeSignaller(signaller) {
+  return dispatch => {
+    deleteSignaller(signaller.id)
+      .then(() => dispatch({
+        type: REMOVE_SIGNALLER,
+        signaller,
+      }))
+  }
+}
+
 function loadSensors() {
   return dispatch => {
     getSensors()
@@ -124,5 +159,8 @@ export default {
   createSensor,
   loadFreeSlots,
   createSignaller,
-  loadSignallers
+  loadSignallers,
+  removeSensor,
+  removeSignaller,
+  createZone
 }

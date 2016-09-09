@@ -56,6 +56,32 @@ export function postSignaller(signaller) {
     })).then(res => res.json());
 }
 
+export function postZone(zone) {
+  return checkRequest(fetch('api/v1/zones',
+    {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(zone)
+    })).then(res => res.json());
+}
+
+export function deleteSensor(id) {
+  return checkRequest(fetch(`api/v1/sensors/${id}`,
+    {
+      method: 'DELETE'
+    }));
+}
+
+export function deleteSignaller(id) {
+  return checkRequest(fetch(`api/v1/signallers/${id}`,
+    {
+      method: 'DELETE'
+    }));
+}
+
 
 function checkRequest(request) {
   return request

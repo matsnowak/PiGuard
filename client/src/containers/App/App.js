@@ -48,7 +48,7 @@ class App extends AuthorizedComponent {
 
         { this.props.visibilities.sensorWindow === false ? null : <SensorDialog piguard={this.props.piguard} open={this.props.visibilities.sensorWindow} setVisibility={this.props.actions.setSensorWindowVisibility} create={this.props.actions.createSensor} />}
         { this.props.visibilities.signallerWindow === false ? null : <SignallerDialog piguard={this.props.piguard} open={this.props.visibilities.signallerWindow} setVisibility={this.props.actions.setSignallerWindowVisibility} create={this.props.actions.createSignaller} />}
-        { this.props.visibilities.zoneWindow === false ? null : <ZoneDialog piguard={this.props.piguard} open={this.props.visibilities.zoneWindow} setVisibility={this.props.actions.setZoneWindowVisibility} />}
+        { this.props.visibilities.zoneWindow === false ? null : <ZoneDialog piguard={this.props.piguard} open={this.props.visibilities.zoneWindow} setVisibility={this.props.actions.setZoneWindowVisibility} create={this.props.actions.createZone} />}
 
       </div>
     );

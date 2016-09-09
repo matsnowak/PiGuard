@@ -35,8 +35,7 @@ function convertSensor(sensor) {
     name: sensor.name,
     triggeredOn: sensor.triggeredOn,
     pullResistance: sensor.pullResistance,
-    self: sensor._links.self.href,
-    slot: sensor._links.slot.href,
+    link: sensor._links.self.href,
     slotId: sensor.slotId,
   }
 }
@@ -46,6 +45,7 @@ function convertSignaller(signaller) {
     id: signaller.id,
     name: signaller.name,
     slotId: signaller.slotId,
+    link: signaller._links.self.href,
   }
 }
 
@@ -58,6 +58,15 @@ function convertSlot(slot) {
     link: slot._links.self.href,
     id: slot.id
   };
+}
+
+function convertZone(zone) {
+  return {
+    id: zone.id,
+    name: zone.name,
+    link: zone._links.self.href,
+
+  }
 }
 
 function mapSensors(state, sensors) {
@@ -93,6 +102,42 @@ function mapSlots(state, slots) {
   return Object.assign({}, state, { slots: loadedSlots });
 }
 
+function unfreeSlot(state, slotId) {
+  const index = state.slots.findIndex(slot => slot.id === slotId);
+
+  if (index > -1) {
+    const removedSlot = state.slots.splice(index, 1);
+    state.freeSlots.push(removedSlot[0]);
+
+    return Object.assign({}, state);
+  }
+
+  return state;
+
+}
+
+function removeSignaller(state, signallerToRemove) {
+  const index = state.signallers.findIndex(signaller => signaller.id === signallerToRemove.id);
+
+  if (index > -1) {
+    state.signallers.splice(index, 1);
+    return Object.assign({}, state);
+  }
+
+  return state;
+}
+
+function removeSensor(state, sensorToRemove) {
+  const index = state.sensors.findIndex(sensor => sensor.id === sensorToRemove.id);
+
+  if (index > -1) {
+    state.sensors.splice(index, 1);
+    return Object.assign({}, state);
+  }
+
+  return state;
+}
+
 const piguard = (state = defaultDefinitions, action) => {
   switch(action.type) {
     case actions.LOAD_SENSORS: return mapSensors(state, action.sensors);
@@ -102,6 +147,9 @@ const piguard = (state = defaultDefinitions, action) => {
     case actions.CREATE_SENSOR: return removeSlot(Object.assign({}, state, { sensors: state.sensors.concat([convertSensor(action.sensor)])}), action.sensor.slotId);
     case actions.CREATE_SIGNALLER: return removeSlot(Object.assign({}, state, { signallers: state.signallers.concat([convertSignaller(action.signaller)])}), action.signaller.slotId);
     case actions.LOAD_FREE_SLOTS: return mapFreeSlots(state, action.slots);
+    case actions.REMOVE_SENSOR: return unfreeSlot(removeSensor(state, action.sensor), action.sensor.slotId);
+    case actions.REMOVE_SIGNALLER: return unfreeSlot(removeSignaller(state, action.signaller), action.signaller.slotId);
+    case actions.CREATE_ZONE: return Object.assign({}, state, { zones: state.zones.concat([convertZone(action.zone)])});
     default: return state;
   }
 };
