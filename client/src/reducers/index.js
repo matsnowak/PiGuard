@@ -25,8 +25,11 @@ const defaultDefinitions = {
   sensors: [],
   signallers: [],
   zones: [],
+  armedZones: [],
   freeSlots: [],
   slots: [],
+  arming: false,
+  armingZone: undefined,
 };
 
 function convertSensor(sensor) {
@@ -65,6 +68,18 @@ function convertZone(zone) {
     id: zone.id,
     name: zone.name,
     link: zone._links.self.href,
+    //todo add sensors and signallers later
+
+  }
+}
+
+function convertArmedZone(armedZone) {
+  return {
+    id: armedZone.id,
+    name: armedZone.name,
+    link: armedZone._links.self.href,
+    date: armedZone.startGuardFrom
+    //todo add sensors and signallers later
 
   }
 }
@@ -73,6 +88,17 @@ function mapSensors(state, sensors) {
   const convertedSensors = sensors._embedded.sensors.map(sensor => convertSensor(sensor));
   return Object.assign({}, state, { sensors: convertedSensors });
 }
+
+function mapZones(state, zones) {
+  const convertedZones = zones._embedded.zones.map(zone => convertZone(zone));
+  return Object.assign({}, state, { zones: convertedZones });
+}
+
+function mapArmedZones(state, armedZones) {
+  const convertedArmedZones = armedZones._embedded.armedzones.map(armedZone => convertArmedZone(armedZone));
+  return Object.assign({}, state, { armedZones: convertedArmedZones });
+}
+
 
 function mapFreeSlots(state, slots) {
   const loadedSlots = slots._embedded.slots.map(slot => convertSlot(slot));
@@ -138,6 +164,38 @@ function removeSensor(state, sensorToRemove) {
   return state;
 }
 
+function removeZone(state, zoneToRemove) {
+  const index = state.zones.findIndex(zone => zone.id === zoneToRemove.id);
+
+  if (index > -1) {
+    state.zones.splice(index, 1);
+    return Object.assign({}, state);
+  }
+
+  return state;
+}
+
+function convertArmedZone(armedZone) {
+  return armedZone;
+}
+
+function armZone(state, armedZone) {
+  const afterRemovingZone = remove(state, 'zones', armedZone.id);
+  afterRemovingZone.armedZones.push(convertArmedZone(armedZone));
+  return Object.assign({}, afterRemovingZone);
+}
+
+function remove(state, collectionName, id) {
+  const index = state[collectionName].findIndex(element => element.id === id);
+
+  if (index > -1) {
+    state[collectionName].splice(index, 1);
+    return Object.assign({}, state);
+  }
+
+  return state;
+}
+
 const piguard = (state = defaultDefinitions, action) => {
   switch(action.type) {
     case actions.LOAD_SENSORS: return mapSensors(state, action.sensors);
@@ -150,6 +208,12 @@ const piguard = (state = defaultDefinitions, action) => {
     case actions.REMOVE_SENSOR: return unfreeSlot(removeSensor(state, action.sensor), action.sensor.slotId);
     case actions.REMOVE_SIGNALLER: return unfreeSlot(removeSignaller(state, action.signaller), action.signaller.slotId);
     case actions.CREATE_ZONE: return Object.assign({}, state, { zones: state.zones.concat([convertZone(action.zone)])});
+    case actions.REMOVE_ZONE: return removeZone(state, action.zone);
+    case actions.START_ARMING: return Object.assign({}, state, { arming: true, armingZone: action.zone });
+    case actions.END_ARMING: return Object.assign({}, state, { arming: false, armingZone: undefined });
+    case actions.ARM_ZONE: return armZone(state, action.armedZone);
+    case actions.LOAD_ZONES: return mapZones(state, action.zones);
+    case actions.LOAD_ARMED_ZONES: return mapArmedZones(state, action.armedZones);
     default: return state;
   }
 };

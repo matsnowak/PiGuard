@@ -1,4 +1,4 @@
-import { getSensors, getSensorsProfile, getSlots, getFreeSlots, postSensor, postSignaller, getSignallers, deleteSensor, deleteSignaller, postZone } from '../services/restService';
+import { getSensors, getSensorsProfile, getSlots, getFreeSlots, postSensor, postSignaller,  getZones, getArmedZones, getSignallers, deleteSensor, deleteSignaller, postZone, deleteZone, postArmZone } from '../services/restService';
 
 export const SIGNALLER_WINDOW_VISIBILITY = 'SIGNALLER_WINDOW_VISIBILITY';
 export const ZONE_WINDOW_VISIBILITY = 'ZONE_WINDOW_VISIBILITY';
@@ -17,8 +17,62 @@ export const LOAD_FREE_SLOTS = 'LOAD_FREE_SLOTS';
 export const CREATE_SENSOR = 'CREATE_SENSOR';
 export const CREATE_SIGNALLER = 'CREATE_SIGNALLER';
 export const REMOVE_SENSOR = 'REMOVE_SENSOR';
+export const REMOVE_ZONE = 'REMOVE_ZONE';
 export const REMOVE_SIGNALLER = 'REMOVE_SIGNALLER';
 export const CREATE_ZONE = 'CREATE_ZONE';
+
+export const LOAD_ARMED_ZONES = 'LOAD_ARMED_ZONES';
+export const START_ARMING = 'START_ARMING';
+export const END_ARMING = 'END_ARMING';
+export const ARM_ZONE = 'ARM_ZONE';
+
+function startArming(zone) {
+  return {
+    type: START_ARMING,
+    zone
+  }
+}
+
+function endArming() {
+  return {
+    type: END_ARMING,
+  }
+}
+
+function loadZones() {
+  return dispatch => {
+    getZones()
+      .then(zones => dispatch({
+        type: LOAD_ZONES,
+        zones
+      }))
+  }
+}
+
+function loadArmedZones() {
+  return dispatch => {
+    getArmedZones()
+      .then(armedZones => dispatch({
+        type: LOAD_ARMED_ZONES,
+        armedZones
+      }))
+  }
+}
+
+function armZone(zone) {
+  return dispatch => {
+    postArmZone(zone)
+      .then((armedZone) => {
+        return dispatch({
+          type: ARM_ZONE,
+          armedZone
+        })
+
+      })
+  }
+}
+
+
 
 function createSensor(sensor) {
   return dispatch => {
@@ -108,6 +162,16 @@ function removeSensor(sensor) {
   }
 }
 
+function removeZone(zone) {
+  return dispatch => {
+    deleteZone(zone.id)
+      .then(() => dispatch({
+        type: REMOVE_ZONE,
+        zone,
+      }))
+  }
+}
+
 function removeSignaller(signaller) {
   return dispatch => {
     deleteSignaller(signaller.id)
@@ -162,5 +226,11 @@ export default {
   loadSignallers,
   removeSensor,
   removeSignaller,
-  createZone
+  createZone,
+  removeZone,
+  endArming,
+  startArming,
+  loadZones,
+  loadArmedZones,
+  armZone,
 }

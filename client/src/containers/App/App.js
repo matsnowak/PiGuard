@@ -11,6 +11,7 @@ import AppBar from '../../components/AppBar/AppBar';
 import SensorDialog from '../../components/SensorDialog/SensorDialog';
 import SignallerDialog from '../../components/SignallerDialog/SignallerDialog';
 import ZoneDialog from '../../components/ZoneDialog/ZoneDialog';
+import ArmZoneDialog from '../../components/ArmZoneDialog/ArmZoneDialog';
 
 const style = {
   height: 50,
@@ -23,6 +24,9 @@ const style = {
 class App extends AuthorizedComponent {
 
   componentWillMount() {
+
+    this.props.actions.loadZones();
+    this.props.actions.loadArmedZones();
     this.props.actions.loadFreeSlots();
     this.props.actions.loadSlots();
 
@@ -49,7 +53,7 @@ class App extends AuthorizedComponent {
         { this.props.visibilities.sensorWindow === false ? null : <SensorDialog piguard={this.props.piguard} open={this.props.visibilities.sensorWindow} setVisibility={this.props.actions.setSensorWindowVisibility} create={this.props.actions.createSensor} />}
         { this.props.visibilities.signallerWindow === false ? null : <SignallerDialog piguard={this.props.piguard} open={this.props.visibilities.signallerWindow} setVisibility={this.props.actions.setSignallerWindowVisibility} create={this.props.actions.createSignaller} />}
         { this.props.visibilities.zoneWindow === false ? null : <ZoneDialog piguard={this.props.piguard} open={this.props.visibilities.zoneWindow} setVisibility={this.props.actions.setZoneWindowVisibility} create={this.props.actions.createZone} />}
-
+        { this.props.piguard.arming === false ? null : <ArmZoneDialog open={true} zone={this.props.piguard.armingZone} actions={this.props.actions} /> }
       </div>
     );
   }

@@ -26,6 +26,16 @@ export function getSlots() {
     .then(res => res.json())
 }
 
+export function getZones() {
+  return fetch('api/v1/zones')
+    .then(res => res.json())
+}
+
+export function getArmedZones() {
+  return fetch('api/v1/armedzones')
+    .then(res => res.json())
+}
+
 export function getFreeSlots() {
   return fetch('api/v1/slots/search/free')
     .then(res => res.json())
@@ -66,6 +76,25 @@ export function postZone(zone) {
       method: 'POST',
       body: JSON.stringify(zone)
     })).then(res => res.json());
+}
+
+export function postArmZone(zone) {
+  return checkRequest(fetch('api/v1/armedzones',
+    {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(zone)
+    })).then(res => res.json());
+}
+
+export function deleteZone(id) {
+  return checkRequest(fetch(`api/v1/zones/${id}`,
+    {
+      method: 'DELETE'
+    }));
 }
 
 export function deleteSensor(id) {
