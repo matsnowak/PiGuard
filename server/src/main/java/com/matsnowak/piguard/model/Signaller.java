@@ -16,7 +16,6 @@ public class Signaller {
     @Column(nullable = false)
     private String name;
 
-    private Integer slotId;
 
     @OneToOne()
     @JoinColumn(name = "slotKey")
@@ -27,7 +26,6 @@ public class Signaller {
     public Signaller(String name, Slot slot) {
         this.name = name;
         this.slot = slot;
-        this.slotId = slot.getId();
     }
 
     public Integer getId() {
@@ -47,18 +45,8 @@ public class Signaller {
     }
 
     public void setSlot(Slot slot) {
-        this.setSlotId(slot.getId());
         this.slot = slot;
     }
-
-    public Integer getSlotId() {
-        return slotId;
-    }
-
-    public void setSlotId(Integer slotId) {
-        this.slotId = slotId;
-    }
-
 
     @Override
     public String toString() {

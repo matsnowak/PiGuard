@@ -28,6 +28,10 @@ public class ArmedZone {
 
     public ArmedZone() {}
 
+    public Integer getId() {
+        return id;
+    }
+
     public Zone getZone() {
         return zone;
     }

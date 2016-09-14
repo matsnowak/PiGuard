@@ -24,7 +24,6 @@ public class Sensor {
     @Column(nullable = false)
     private PullResistance pullResistance = PullResistance.OFF;
 
-    private Integer slotId;
 
     @NotNull
     @OneToOne(fetch = FetchType.EAGER)
@@ -32,10 +31,9 @@ public class Sensor {
     private Slot slot;
 
 
-    public Sensor(String name, Slot slot, TriggeringType triggeredOn, PullResistance pullResistance) {
+    public  Sensor(String name, Slot slot, TriggeringType triggeredOn, PullResistance pullResistance) {
         this.name = name;
         this.slot = slot;
-        this.slotId = slot.getId();
         this.triggeredOn = triggeredOn;
         if (pullResistance != null) {
             this.pullResistance = pullResistance;
@@ -47,12 +45,6 @@ public class Sensor {
     public Integer getId() {
         return id;
     }
-
-    public Integer getSlotId() {
-        return slotId;
-    }
-
-    public void setSlotId(Integer slotId) { this.slotId = slotId; }
 
     public String getName() {
         return name;
@@ -68,7 +60,6 @@ public class Sensor {
     }
 
     public void setSlot(Slot slot) {
-        this.setSlotId(slot.getId());
         this.slot = slot;
     }
 
