@@ -16,30 +16,30 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 /**
  * Created by Mateusz Nowak on 15.09.2016.
  */
-@Configuration
+//@Configuration
 public class WebSecurityAuthenitcationConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
-    @Autowired
-    SettingsRepository settingsRepository;
-
-
-    @Override
-    public void init(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService());
-    }
-
-    @Bean
-    UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-                Settings settings = settingsRepository.findOne(1);
-                if (settings != null) {
-                    return new User(Defaults.DEFAULT_USER, settings.getPass(), true, true, true, true, AuthorityUtils.createAuthorityList(Defaults.DEFAULT_USER_AUTHORITY));
-                } else {
-                    throw new UsernameNotFoundException("could not find the user");
-                }
-            }
-        };
-    }
+//    @Autowired
+//    SettingsRepository settingsRepository;
+//
+//
+//    @Override
+//    public void init(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetailsService());
+//    }
+//
+//    @Bean
+//    UserDetailsService userDetailsService() {
+//        return new UserDetailsService() {
+//            @Override
+//            public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+//                Settings settings = settingsRepository.findOne(1);
+//                if (settings != null) {
+//                    return new User(Defaults.DEFAULT_USER, settings.getPass(), true, true, true, true, AuthorityUtils.createAuthorityList(Defaults.DEFAULT_USER_AUTHORITY));
+//                } else {
+//                    throw new UsernameNotFoundException("could not find the user");
+//                }
+//            }
+//        };
+//    }
 }
