@@ -40,6 +40,8 @@ public class AutoConfig {
             one = new Settings();
             one.setDisarmDelay(30);
             one.setExitDelay(45);
+            one.setPass(Defaults.DEFAULT_PASSWORD);
+            one.setUsername(Defaults.DEFAULT_USER);
             settingsRepository.save(one);
         }
     }

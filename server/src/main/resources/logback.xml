@@ -33,7 +33,7 @@
     <!--<logger name="org.hibernate.SQL" level="DEBUG" />-->
     <!--<logger name="org.hibernate.type" level="TRACE" />-->
 
-    <logger name="org.springframework" level="warn" additivity="false">
+    <logger name="org.springframework" level="info" additivity="false">
         <appender-ref ref="console" />
         <appender-ref ref="FILE" />
     </logger>
