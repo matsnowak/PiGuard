@@ -39,7 +39,7 @@ function convertSensor(sensor) {
     triggeredOn: sensor.triggeredOn,
     pullResistance: sensor.pullResistance,
     link: sensor._links.self.href,
-    slotId: sensor.slotId,
+    slotId: sensor.slot.id,
   }
 }
 
@@ -47,7 +47,7 @@ function convertSignaller(signaller) {
   return {
     id: signaller.id,
     name: signaller.name,
-    slotId: signaller.slotId,
+    slotId: signaller.slot.id,
     link: signaller._links.self.href,
   }
 }
@@ -68,8 +68,8 @@ function convertZone(zone) {
     id: zone.id,
     name: zone.name,
     link: zone._links.self.href,
-    //todo add sensors and signallers later
-
+    sensors: zone.sensors.map(sensor => sensor.name),
+    signallers: zone.signallers.map(signaller => signaller.name),
   }
 }
 
@@ -209,6 +209,7 @@ const piguard = (state = defaultDefinitions, action) => {
     case actions.REMOVE_SIGNALLER: return unfreeSlot(removeSignaller(state, action.signaller), action.signaller.slotId);
     case actions.CREATE_ZONE: return Object.assign({}, state, { zones: state.zones.concat([convertZone(action.zone)])});
     case actions.REMOVE_ZONE: return removeZone(state, action.zone);
+    case actions.REMOVE_ARMED_ZONE: return remove(state, 'armedZones', action.armedZone.id);
     case actions.START_ARMING: return Object.assign({}, state, { arming: true, armingZone: action.zone });
     case actions.END_ARMING: return Object.assign({}, state, { arming: false, armingZone: undefined });
     case actions.ARM_ZONE: return armZone(state, action.armedZone);

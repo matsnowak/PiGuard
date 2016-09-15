@@ -1,4 +1,4 @@
-import { getSensors, getSensorsProfile, getSlots, getFreeSlots, postSensor, postSignaller,  getZones, getArmedZones, getSignallers, deleteSensor, deleteSignaller, postZone, deleteZone, postArmZone } from '../services/restService';
+import { getSensors, getSensorsProfile, getSlots, getFreeSlots, postSensor, postSignaller,  getZones, getArmedZones, getSignallers, deleteSensor, deleteArmedZone, deleteSignaller, postZone, deleteZone, postArmZone } from '../services/restService';
 
 export const SIGNALLER_WINDOW_VISIBILITY = 'SIGNALLER_WINDOW_VISIBILITY';
 export const ZONE_WINDOW_VISIBILITY = 'ZONE_WINDOW_VISIBILITY';
@@ -18,6 +18,7 @@ export const CREATE_SENSOR = 'CREATE_SENSOR';
 export const CREATE_SIGNALLER = 'CREATE_SIGNALLER';
 export const REMOVE_SENSOR = 'REMOVE_SENSOR';
 export const REMOVE_ZONE = 'REMOVE_ZONE';
+export const REMOVE_ARMED_ZONE = 'REMOVE_ARMED_ZONE';
 export const REMOVE_SIGNALLER = 'REMOVE_SIGNALLER';
 export const CREATE_ZONE = 'CREATE_ZONE';
 
@@ -172,6 +173,16 @@ function removeZone(zone) {
   }
 }
 
+function removeArmedZone(armedZone) {
+  return dispatch => {
+    deleteArmedZone(armedZone.id)
+      .then(() => dispatch({
+        type: REMOVE_ARMED_ZONE,
+        armedZone,
+      }))
+  }
+}
+
 function removeSignaller(signaller) {
   return dispatch => {
     deleteSignaller(signaller.id)
@@ -233,4 +244,5 @@ export default {
   loadZones,
   loadArmedZones,
   armZone,
+  removeArmedZone
 }

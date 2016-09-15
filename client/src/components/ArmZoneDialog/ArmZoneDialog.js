@@ -34,10 +34,14 @@ class ArmZoneDialog extends Component {
       <FlatButton
         label="Arm"
         primary
-        onTouchTap={() => this.props.actions.armZone({
-          startGuardFrom: this.state.date.toJSON(),
-          zone: this.props.zone.link,
-        })}
+        onTouchTap={() =>  {
+          const date = this.state.date.toJSON();
+          this.props.actions.armZone({
+            startGuardFrom: date.substring(0, date.length - 1),
+            zone: this.props.zone.link,
+          })
+        }}
+
       />,
     ];
 

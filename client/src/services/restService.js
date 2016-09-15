@@ -5,7 +5,7 @@ export function login(pin) {
 }
 
 export function getSensors() {
-  return fetch('api/v1/sensors')
+  return fetch('api/v1/sensors?projection=inline')
     .then(res => res.json())
 
 }
@@ -17,7 +17,7 @@ export function getSensorsProfile() {
 }
 
 export function getSignallers() {
-  return fetch('api/v1/signallers')
+  return fetch('api/v1/signallers?projection=inline')
     .then(res => res.json())
 }
 
@@ -27,12 +27,12 @@ export function getSlots() {
 }
 
 export function getZones() {
-  return fetch('api/v1/zones')
+  return fetch('api/v1/zones?projection=inline')
     .then(res => res.json())
 }
 
 export function getArmedZones() {
-  return fetch('api/v1/armedzones')
+  return fetch('api/v1/armedzones?projection=inline')
     .then(res => res.json())
 }
 
@@ -42,7 +42,7 @@ export function getFreeSlots() {
 }
 
 export function postSensor(sensor) {
-  return checkRequest(fetch('api/v1/sensors',
+  return checkRequest(fetch('api/v1/sensors?projection=inline',
     {
       headers: {
         'Accept': 'application/json',
@@ -55,7 +55,7 @@ export function postSensor(sensor) {
 
 
 export function postSignaller(signaller) {
-  return checkRequest(fetch('api/v1/signallers',
+  return checkRequest(fetch('api/v1/signallers?projection=inline',
     {
       headers: {
         'Accept': 'application/json',
@@ -67,7 +67,7 @@ export function postSignaller(signaller) {
 }
 
 export function postZone(zone) {
-  return checkRequest(fetch('api/v1/zones',
+  return checkRequest(fetch('api/v1/zones?projection=inline',
     {
       headers: {
         'Accept': 'application/json',
@@ -79,7 +79,7 @@ export function postZone(zone) {
 }
 
 export function postArmZone(zone) {
-  return checkRequest(fetch('api/v1/armedzones',
+  return checkRequest(fetch('api/v1/armedzones?projection=inline',
     {
       headers: {
         'Accept': 'application/json',
@@ -111,6 +111,12 @@ export function deleteSignaller(id) {
     }));
 }
 
+export function deleteArmedZone(id) {
+  return checkRequest(fetch(`api/v1/armedzones/${id}`,
+    {
+      method: 'DELETE'
+    }));
+}
 
 function checkRequest(request) {
   return request
