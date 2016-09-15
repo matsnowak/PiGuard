@@ -1,43 +1,57 @@
 import { timeoutPromise } from '../utils/timeoutPromise';
+//todo declared two times, auth service
+export const AUTH_TOKEN = 'user';
 
-export function login(pin) {
-  return timeoutPromise(200).then(() => pin === '0000');
+function getToken() {
+  return localStorage.getItem(AUTH_TOKEN);
+}
+
+function getAuthHeader() {
+  return { 'Authorization': getToken() };
+}
+
+export function login(token) {
+  return fetch('api/v1/auth/login', { headers: { 'Authorization': token }}).then((res) => res.status !== 401);
+}
+
+export function logout(token) {
+  return fetch('api/v1/auth/logout', { headers: { 'Authorization': token }}).then((res) => res.status !== 401);
 }
 
 export function getSensors() {
-  return fetch('api/v1/sensors?projection=inline')
+  return fetch('api/v1/sensors?projection=inline', { headers: getAuthHeader()})
     .then(res => res.json())
 
 }
 
 export function getSensorsProfile() {
-  return fetch('api/v1/profile/sensors')
+  return fetch('api/v1/profile/sensors', { headers: getAuthHeader()})
     .then(res => res.json())
 
 }
 
 export function getSignallers() {
-  return fetch('api/v1/signallers?projection=inline')
+  return fetch('api/v1/signallers?projection=inline', { headers: getAuthHeader()})
     .then(res => res.json())
 }
 
 export function getSlots() {
-  return fetch('api/v1/slots')
+  return fetch('api/v1/slots', { headers: getAuthHeader()})
     .then(res => res.json())
 }
 
 export function getZones() {
-  return fetch('api/v1/zones?projection=inline')
+  return fetch('api/v1/zones?projection=inline', { headers: getAuthHeader()})
     .then(res => res.json())
 }
 
 export function getArmedZones() {
-  return fetch('api/v1/armedzones?projection=inline')
+  return fetch('api/v1/armedzones?projection=inline', { headers: getAuthHeader()})
     .then(res => res.json())
 }
 
 export function getFreeSlots() {
-  return fetch('api/v1/slots/search/free')
+  return fetch('api/v1/slots/search/free', { headers: getAuthHeader()})
     .then(res => res.json())
 }
 
@@ -46,7 +60,8 @@ export function postSensor(sensor) {
     {
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': getToken()
       },
       method: 'POST',
       body: JSON.stringify(sensor)
@@ -59,7 +74,8 @@ export function postSignaller(signaller) {
     {
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': getToken()
       },
       method: 'POST',
       body: JSON.stringify(signaller)
@@ -71,7 +87,8 @@ export function postZone(zone) {
     {
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': getToken()
       },
       method: 'POST',
       body: JSON.stringify(zone)
@@ -83,7 +100,8 @@ export function postArmZone(zone) {
     {
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': getToken()
       },
       method: 'POST',
       body: JSON.stringify(zone)
@@ -93,28 +111,32 @@ export function postArmZone(zone) {
 export function deleteZone(id) {
   return checkRequest(fetch(`api/v1/zones/${id}`,
     {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: getAuthHeader()
     }));
 }
 
 export function deleteSensor(id) {
   return checkRequest(fetch(`api/v1/sensors/${id}`,
     {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: getAuthHeader()
     }));
 }
 
 export function deleteSignaller(id) {
   return checkRequest(fetch(`api/v1/signallers/${id}`,
     {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: getAuthHeader()
     }));
 }
 
 export function deleteArmedZone(id) {
   return checkRequest(fetch(`api/v1/armedzones/${id}`,
     {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: getAuthHeader()
     }));
 }
 
