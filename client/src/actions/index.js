@@ -1,8 +1,12 @@
-import { getSensors, getSensorsProfile, getSlots, getFreeSlots, postSensor, postSignaller,  getZones, getArmedZones, getSignallers, deleteSensor, deleteArmedZone, deleteSignaller, postZone, deleteZone, postArmZone } from '../services/restService';
+import { getSensors, getSensorsProfile, getSlots, getFreeSlots,
+  postSensor, postSignaller,  getZones, getArmedZones, getSignallers,
+  deleteSensor, deleteArmedZone, deleteSignaller, postZone, deleteZone, postArmZone,
+  updateSettings as restUpdateSettings, getSettings } from '../services/restService';
 
 export const SIGNALLER_WINDOW_VISIBILITY = 'SIGNALLER_WINDOW_VISIBILITY';
 export const ZONE_WINDOW_VISIBILITY = 'ZONE_WINDOW_VISIBILITY';
 export const SENSOR_WINDOW_VISIBILITY = 'SENSOR_WINDOW_VISIBILITY';
+export const SETTINGS_WINDOW_VISIBILITY = 'SETTINGS_WINDOW_VISIBILITY';
 
 export const LOAD_RESISTANCES = 'LOAD_RESISTANCES';
 export const LOAD_TRIGGERS = 'LOAD_TRIGGERS';
@@ -26,6 +30,30 @@ export const LOAD_ARMED_ZONES = 'LOAD_ARMED_ZONES';
 export const START_ARMING = 'START_ARMING';
 export const END_ARMING = 'END_ARMING';
 export const ARM_ZONE = 'ARM_ZONE';
+
+export const LOAD_SETTINGS = 'LOAD_SETTINGS';
+export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';
+
+function loadSettings() {
+  return dispatch => {
+    getSettings()
+      .then(settings => dispatch({
+        type: LOAD_SETTINGS,
+        settings,
+      }))
+  }
+}
+
+function updateSettings(settings) {
+  return dispatch => {
+    restUpdateSettings(settings)
+      .then(() => getSettings())
+      .then(settings => dispatch({
+        type: LOAD_SETTINGS,
+        settings,
+      }))
+  }
+}
 
 function startArming(zone) {
   return {
@@ -203,6 +231,14 @@ function loadSensors() {
   }
 }
 
+
+function setSettingsWindowVisibility(visibility) {
+  return {
+    type: SETTINGS_WINDOW_VISIBILITY,
+    visibility,
+  }
+}
+
 function setSignallerWindowVisibility(visibility) {
   return {
     type: SIGNALLER_WINDOW_VISIBILITY,
@@ -244,5 +280,8 @@ export default {
   loadZones,
   loadArmedZones,
   armZone,
-  removeArmedZone
+  removeArmedZone,
+  loadSettings,
+  updateSettings,
+  setSettingsWindowVisibility,
 }

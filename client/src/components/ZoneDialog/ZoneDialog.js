@@ -167,10 +167,10 @@ class ZoneDialog extends Component {
         <TextField
           value={this.state.name}
           onChange={this.handleChangeName}
-          hintText="Name"
+          floatingLabelText="Name"
         />
         <div style={{ display: 'flex' }}>
-          <SelectField style={{ textAlign: 'left', flex: 1}} hintText="Sensor" value={this.state.sensorIndex} onChange={this.handleChangeSensor}>
+          <SelectField style={{ textAlign: 'left', flex: 1}} floatingLabelText="Sensor" value={this.state.sensorIndex} onChange={this.handleChangeSensor}>
             {sensors}
           </SelectField>
           <IconButton onClick={() => this.addSensor()} mini={true} style={{ marginLeft: '20px', flex: 1 }}>
@@ -185,7 +185,7 @@ class ZoneDialog extends Component {
         </div>
 
         <div style={{ display: 'flex' }}>
-          <SelectField style={{ textAlign: 'left', flex: 1}} hintText="Signaller" value={this.state.signallerIndex} onChange={this.handleChangeSignaller}>
+          <SelectField style={{ textAlign: 'left', flex: 1}} floatingLabelText="Signaller" value={this.state.signallerIndex} onChange={this.handleChangeSignaller}>
             {signallers}
           </SelectField>
           <IconButton onClick={() => this.addSignaller()} mini={true} style={{ marginLeft: '20px', flex: 1 }}>

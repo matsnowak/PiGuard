@@ -2,11 +2,12 @@ import { routerReducer as routing } from 'react-router-redux'
 import { combineReducers } from 'redux'
 import * as actions from '../actions';
 
-const visibilityReducer = (state = { zoneWindow: false, signallerWindow: false, sensorWindow: false }, action) => {
+const visibilityReducer = (state = { zoneWindow: false, signallerWindow: false, sensorWindow: false, settingsWindow: false }, action) => {
   switch(action.type) {
     case actions.SIGNALLER_WINDOW_VISIBILITY: return Object.assign({}, state, { signallerWindow: action.visibility });
     case actions.SENSOR_WINDOW_VISIBILITY: return Object.assign({}, state, { sensorWindow: action.visibility });
     case actions.ZONE_WINDOW_VISIBILITY: return Object.assign({}, state, { zoneWindow: action.visibility });
+    case actions.SETTINGS_WINDOW_VISIBILITY: return Object.assign({}, state, { settingsWindow: action.visibility });
     default: return state;
   }
 };
@@ -30,6 +31,7 @@ const defaultDefinitions = {
   slots: [],
   arming: false,
   armingZone: undefined,
+  settings: {},
 };
 
 function convertSensor(sensor) {
@@ -215,6 +217,7 @@ const piguard = (state = defaultDefinitions, action) => {
     case actions.ARM_ZONE: return armZone(state, action.armedZone);
     case actions.LOAD_ZONES: return mapZones(state, action.zones);
     case actions.LOAD_ARMED_ZONES: return mapArmedZones(state, action.armedZones);
+    case actions.LOAD_SETTINGS: return Object.assign({}, state, { settings: action.settings });
     default: return state;
   }
 };

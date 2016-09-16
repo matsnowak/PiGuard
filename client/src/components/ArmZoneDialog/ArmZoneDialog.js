@@ -63,16 +63,16 @@ class ArmZoneDialog extends Component {
         <TextField
           value={this.props.zone.name}
           disabled={true}
-          hintText="Name"
+          floatingLabelText="Name"
         />
         <DatePicker
-          hintText="Date"
+          floatingLabelText="Date"
           value={this.state.date}
           onChange={this.handleChange}
         />
         <TimePicker
           format="24hr"
-          hintText="Time"
+          floatingLabelText="Time"
           value={this.state.date}
           onChange={this.handleChange}
         />

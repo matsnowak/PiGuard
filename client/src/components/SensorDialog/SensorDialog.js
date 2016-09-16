@@ -94,19 +94,19 @@ class SensorDialog extends Component {
           onChange={this.handleChangeName}
           hintText="Name"
         />
-        <SelectField style={{ textAlign: 'left'}} hintText="Triggered On" value={this.state.triggerIndex} onChange={this.handleChangeTrigger}>
+        <SelectField style={{ textAlign: 'left'}} floatingLabelText="Triggered On" value={this.state.triggerIndex} onChange={this.handleChangeTrigger}>
           <MenuItem value={0} primaryText={triggers[0]} />
           <MenuItem value={1} primaryText={triggers[1]} />
           <MenuItem value={2} primaryText={triggers[2]} />
         </SelectField>
 
-        <SelectField style={{ textAlign: 'left'}} hintText="Pull resistance" value={this.state.resistanceIndex} onChange={this.handleChangeResistance}>
+        <SelectField style={{ textAlign: 'left'}} floatingLabelText="Pull resistance" value={this.state.resistanceIndex} onChange={this.handleChangeResistance}>
           <MenuItem value={0} primaryText={resistances[0]} />
           <MenuItem value={1} primaryText={resistances[1]} />
           <MenuItem value={2} primaryText={resistances[2]} />
         </SelectField>
 
-        <SelectField style={{ textAlign: 'left'}} hintText="Slot" value={this.state.slotIndex} onChange={this.handleChangeSlot}>
+        <SelectField style={{ textAlign: 'left'}} floatingLabelText="Slot" value={this.state.slotIndex} onChange={this.handleChangeSlot}>
           {slots}
         </SelectField>
 

@@ -74,9 +74,9 @@ class SignallerDialog extends Component {
         <TextField
           value={this.state.name}
           onChange={this.handleChangeName}
-          hintText="Name"
+          floatingLabelText="Name"
         />
-        <SelectField style={{ textAlign: 'left'}} hintText="Slot" value={this.state.slotIndex} onChange={this.handleChangeSlot}>
+        <SelectField style={{ textAlign: 'left'}} floatingLabelText="Slot" value={this.state.slotIndex} onChange={this.handleChangeSlot}>
           {slots}
         </SelectField>
 

@@ -6,6 +6,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton/IconButton';
 import ContentAdd from 'material-ui/svg-icons/content/add'
+import ContentSettings from 'material-ui/svg-icons/action/settings'
 
 import AddButton from '../AddButton/AddButton';
 
@@ -62,7 +63,10 @@ class AppBar extends Component {
               />
             </Tabs>
           </div>
-          <div style={{ flex: 1, verticalAlign: 'middle' }}>
+          <div style={{ flex: 1, verticalAlign: 'middle', display: 'flex' }}>
+            <IconButton style={{ margin: 'auto' }} onClick={() => this.props.actions.setSettingsWindowVisibility(true)}>
+              <ContentSettings color="white" hoverColor="green" />
+            </IconButton>
             <AddButton actions={this.props.actions} />
           </div>
       </Paper>

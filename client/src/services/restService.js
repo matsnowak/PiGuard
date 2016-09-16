@@ -22,40 +22,59 @@ export function logout() {
   return fetch('auth/logout', { headers: { 'Authorization': `Basic ${getToken()}` }}).then((res) => res.status !== 401);
 }
 
+export function getSettings() {
+  return checkRequest(fetch('api/v1/settings/1', { headers: getAuthHeader()}))
+    .then(res => res.json())
+}
+
+
+export function updateSettings(settings) {
+  return checkRequest(fetch('api/v1/settings/1',
+    {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'x-auth-token': getToken()
+      },
+      method: 'PUT',
+      body: JSON.stringify(settings)
+    })).then(res => res.json());
+}
+
 export function getSensors() {
-  return fetch('api/v1/sensors?projection=inline', { headers: getAuthHeader()})
+  return checkRequest(fetch('api/v1/sensors?projection=inline', { headers: getAuthHeader()}))
     .then(res => res.json())
 
 }
 
 export function getSensorsProfile() {
-  return fetch('api/v1/profile/sensors', { headers: getAuthHeader()})
+  return checkRequest(fetch('api/v1/profile/sensors', { headers: getAuthHeader()}))
     .then(res => res.json())
 
 }
 
 export function getSignallers() {
-  return fetch('api/v1/signallers?projection=inline', { headers: getAuthHeader()})
+  return checkRequest(fetch('api/v1/signallers?projection=inline', { headers: getAuthHeader()}))
     .then(res => res.json())
 }
 
 export function getSlots() {
-  return fetch('api/v1/slots', { headers: getAuthHeader()})
+  return checkRequest(fetch('api/v1/slots', { headers: getAuthHeader()}))
     .then(res => res.json())
 }
 
 export function getZones() {
-  return fetch('api/v1/zones?projection=inline', { headers: getAuthHeader()})
+  return checkRequest(fetch('api/v1/zones?projection=inline', { headers: getAuthHeader()}))
     .then(res => res.json())
 }
 
 export function getArmedZones() {
-  return fetch('api/v1/armedzones?projection=inline', { headers: getAuthHeader()})
+  return checkRequest(fetch('api/v1/armedzones?projection=inline', { headers: getAuthHeader()}))
     .then(res => res.json())
 }
 
 export function getFreeSlots() {
-  return fetch('api/v1/slots/search/free', { headers: getAuthHeader()})
+  return checkRequest(fetch('api/v1/slots/search/free', { headers: getAuthHeader()}))
     .then(res => res.json())
 }
 
@@ -148,6 +167,7 @@ function checkRequest(request) {
   return request
     .then(res => {
       if (res.status < 300) return res;
+      if (res.status === 401)  localStorage.removeItem(AUTH_TOKEN);
       else throw new Error(`${res.status}: ${res.statusText}`)
     }).catch(err => {
       alert(err.message);

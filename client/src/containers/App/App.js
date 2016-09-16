@@ -14,6 +14,7 @@ import SensorDialog from '../../components/SensorDialog/SensorDialog';
 import SignallerDialog from '../../components/SignallerDialog/SignallerDialog';
 import ZoneDialog from '../../components/ZoneDialog/ZoneDialog';
 import ArmZoneDialog from '../../components/ArmZoneDialog/ArmZoneDialog';
+import SettingsDialog from '../../components/SettingsDialog/SettingsDialog';
 
 const style = {
   height: 50,
@@ -35,6 +36,7 @@ class App extends AuthorizedComponent {
       this.props.actions.loadSlots();
       this.props.actions.loadSignallers();
       this.props.actions.loadSensors();
+      this.props.actions.loadSettings();
     }
 
 
@@ -59,6 +61,8 @@ class App extends AuthorizedComponent {
         { this.props.visibilities.signallerWindow === false ? null : <SignallerDialog piguard={this.props.piguard} open={this.props.visibilities.signallerWindow} setVisibility={this.props.actions.setSignallerWindowVisibility} create={this.props.actions.createSignaller} />}
         { this.props.visibilities.zoneWindow === false ? null : <ZoneDialog piguard={this.props.piguard} open={this.props.visibilities.zoneWindow} setVisibility={this.props.actions.setZoneWindowVisibility} create={this.props.actions.createZone} />}
         { this.props.piguard.arming === false ? null : <ArmZoneDialog open={true} zone={this.props.piguard.armingZone} actions={this.props.actions} /> }
+
+        { this.props.visibilities.settingsWindow === false ? null : <SettingsDialog open={true} settings={this.props.piguard.settings} actions={this.props.actions} /> }
       </div>
     );
   }
