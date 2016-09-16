@@ -1,5 +1,6 @@
-package com.matsnowak.piguard.main;
+package com.matsnowak.piguard.main.config;
 
+import com.matsnowak.piguard.main.Defaults;
 import com.matsnowak.piguard.model.Settings;
 import com.matsnowak.piguard.repositories.SettingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.savedrequest.NullRequestCache;
+import org.springframework.session.ExpiringSession;
+import org.springframework.session.MapSessionRepository;
+import org.springframework.session.SessionRepository;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.session.web.http.HttpSessionStrategy;
+import org.springframework.session.web.http.SessionRepositoryFilter;
+
+import javax.servlet.ServletContext;
 
 /**
  * Created by Mateusz Nowak on 15.09.2016.
@@ -28,6 +35,7 @@ import org.springframework.session.web.http.HttpSessionStrategy;
 @EnableWebSecurity
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private Integer maxInactiveIntervalInSeconds = 1800;
 
     @Autowired
     SettingsRepository settingsRepository;
@@ -51,6 +59,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 }
             }
         };
+    }
+
+    @Bean
+    public MapSessionRepository mapSessionRepository() {
+        MapSessionRepository sessionRepository = new MapSessionRepository();
+        sessionRepository.setDefaultMaxInactiveInterval(maxInactiveIntervalInSeconds);
+        return sessionRepository;
+    }
+
+    @Bean
+    public <S extends ExpiringSession> SessionRepositoryFilter<? extends ExpiringSession>
+    springSessionRepositoryFilter(SessionRepository<S> sessionRepository, ServletContext servletContext) {
+        SessionRepositoryFilter<S> sessionRepositoryFilter = new SessionRepositoryFilter<S>(sessionRepository);
+        sessionRepositoryFilter.setServletContext(servletContext);
+        sessionRepositoryFilter.setHttpSessionStrategy(httpSessionStrategy());
+        return sessionRepositoryFilter;
     }
 
     @Override

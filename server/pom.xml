@@ -59,13 +59,7 @@
 
 		<dependency>
 			<groupId>org.springframework.session</groupId>
-			<artifactId>spring-session-data-redis</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.github.kstyrc</groupId>
-			<artifactId>embedded-redis</artifactId>
-			<version>0.6</version>
+			<artifactId>spring-session</artifactId>
 		</dependency>
 
 		<dependency>
