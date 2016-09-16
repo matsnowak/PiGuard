@@ -9,8 +9,15 @@ class Zones extends Component {
     return this.props.piguard.zones.find(zone => zone.id === id);
   }
 
+  checkElement(element) {
+    if (element < 10) {
+      return `0${element}`;
+    }
+    return element;
+  }
+
   contructStringDateFromCustomObject(customObject) {
-    return `${customObject.year}-${customObject.monthValue}-${customObject.dayOfMonth} ${customObject.hour}:${customObject.minute}`;
+    return `${customObject.year}-${this.checkElement(customObject.monthValue)}-${this.checkElement(customObject.dayOfMonth)} ${this.checkElement(customObject.hour)}:${this.checkElement(customObject.minute)}:${this.checkElement(customObject.second)}`;
   }
 
   render() {
