@@ -15,6 +15,7 @@ import SignallerDialog from '../../components/SignallerDialog/SignallerDialog';
 import ZoneDialog from '../../components/ZoneDialog/ZoneDialog';
 import ArmZoneDialog from '../../components/ArmZoneDialog/ArmZoneDialog';
 import SettingsDialog from '../../components/SettingsDialog/SettingsDialog';
+import AccountDialog from '../../components/AccountDialog/AccountDialog';
 
 const style = {
   height: 50,
@@ -63,6 +64,7 @@ class App extends AuthorizedComponent {
         { this.props.piguard.arming === false ? null : <ArmZoneDialog open={true} zone={this.props.piguard.armingZone} actions={this.props.actions} /> }
 
         { this.props.visibilities.settingsWindow === false ? null : <SettingsDialog open={true} settings={this.props.piguard.settings} actions={this.props.actions} /> }
+        { this.props.visibilities.accountWindow === false ? null : <AccountDialog open={true} actions={this.props.actions} /> }
       </div>
     );
   }

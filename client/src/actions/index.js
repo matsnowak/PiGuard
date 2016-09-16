@@ -1,14 +1,15 @@
 import { getSensors, getSensorsProfile, getSlots, getFreeSlots,
   postSensor, postSignaller,  getZones, getArmedZones, getSignallers,
   deleteSensor, deleteArmedZone, deleteSignaller, postZone, deleteZone, postArmZone,
-  updateSettings as restUpdateSettings, getSettings } from '../services/restService';
+  updateSettings as restUpdateSettings, updatePin as restUpdatePin, getSettings } from '../services/restService';
 
-import { logout } from '../services/authService';
+import { logout, login } from '../services/authService';
 
 export const SIGNALLER_WINDOW_VISIBILITY = 'SIGNALLER_WINDOW_VISIBILITY';
 export const ZONE_WINDOW_VISIBILITY = 'ZONE_WINDOW_VISIBILITY';
 export const SENSOR_WINDOW_VISIBILITY = 'SENSOR_WINDOW_VISIBILITY';
 export const SETTINGS_WINDOW_VISIBILITY = 'SETTINGS_WINDOW_VISIBILITY';
+export const ACCOUNT_WINDOW_VISIBILITY = 'ACCOUNT_WINDOW_VISIBILITY';
 
 export const LOAD_RESISTANCES = 'LOAD_RESISTANCES';
 export const LOAD_TRIGGERS = 'LOAD_TRIGGERS';
@@ -43,6 +44,16 @@ function loadSettings() {
         type: LOAD_SETTINGS,
         settings,
       }))
+  }
+}
+
+function updatePin(pins) {
+  return () => {
+    restUpdatePin(pins)
+      .then(() => {
+        logout();
+        login(pins.newPin);
+      })
   }
 }
 
@@ -242,6 +253,14 @@ function loadSensors() {
 }
 
 
+function setAccountWindowVisibility(visibility) {
+  return {
+    type: ACCOUNT_WINDOW_VISIBILITY,
+    visibility,
+  }
+}
+
+
 function setSettingsWindowVisibility(visibility) {
   return {
     type: SETTINGS_WINDOW_VISIBILITY,
@@ -294,4 +313,6 @@ export default {
   loadSettings,
   updateSettings,
   setSettingsWindowVisibility,
+  setAccountWindowVisibility,
+  updatePin
 }

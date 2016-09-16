@@ -54,10 +54,10 @@ class LoginBox extends Component {
   };
 
   handleChange = (event) => {
-    if (event.target.value.length === 0 || event.target.value.length < 5 && /^\d+$/.test(event.target.value)) {
+    if (event.target.value.length === 0 || /^\d+$/.test(event.target.value)) {
       this.setState({
         value: event.target.value,
-        disabled: event.target.value.length !== 4,
+        disabled: event.target.value.length === '',
         errorText: '',
       });
     }
@@ -73,6 +73,7 @@ class LoginBox extends Component {
           value={this.state.value}
           onChange={this.handleChange}
           errorText={this.state.errorText}
+          type="password"
         />
         <IconButton
           onClick={this.loginWithPin}

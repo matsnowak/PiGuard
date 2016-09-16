@@ -28,6 +28,20 @@ export function getSettings() {
 }
 
 
+export function updatePin(pins) {
+  return checkRequest(fetch('auth/changepin',
+    {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'x-auth-token': getToken()
+      },
+      method: 'POST',
+      body: JSON.stringify(pins)
+    })).then(res => res.json());
+}
+
+
 export function updateSettings(settings) {
   return checkRequest(fetch('api/v1/settings/1',
     {

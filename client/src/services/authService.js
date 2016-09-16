@@ -20,8 +20,10 @@ export function login(pin) {
 
 export function logout() {
  const token = localStorage.getItem(AUTH_TOKEN);
- return restLogout(token)
-   .then(() => {
-     localStorage.removeItem(AUTH_TOKEN);
-   })
+  if (token !== null) {
+    return restLogout(token)
+      .then(() => {
+        localStorage.removeItem(AUTH_TOKEN);
+      })
+  }
 }

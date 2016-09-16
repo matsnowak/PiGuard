@@ -1,12 +1,14 @@
 import React, { Component, PropTypes } from 'react';
-
+import { logout } from '../../services/authService';
 import Paper from 'material-ui/Paper';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton/IconButton';
-import ContentAdd from 'material-ui/svg-icons/content/add'
-import ContentSettings from 'material-ui/svg-icons/action/settings'
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentSettings from 'material-ui/svg-icons/action/settings';
+import ContentAccount from 'material-ui/svg-icons/action/account-box';
+import ContentExit from 'material-ui/svg-icons/action/exit-to-app';
 
 import AddButton from '../AddButton/AddButton';
 
@@ -64,10 +66,19 @@ class AppBar extends Component {
             </Tabs>
           </div>
           <div style={{ flex: 1, verticalAlign: 'middle', display: 'flex' }}>
+            <IconButton style={{ margin: 'auto' }} onClick={() => this.props.actions.setAccountWindowVisibility(true)}>
+              <ContentAccount color="white" hoverColor="green" />
+            </IconButton>
             <IconButton style={{ margin: 'auto' }} onClick={() => this.props.actions.setSettingsWindowVisibility(true)}>
               <ContentSettings color="white" hoverColor="green" />
             </IconButton>
             <AddButton actions={this.props.actions} />
+            <IconButton style={{ margin: 'auto' }} onClick={() => {
+              logout();
+              this.context.router.push('/login');
+            }}>
+              <ContentExit color="white" hoverColor="green" />
+            </IconButton>
           </div>
       </Paper>
 
