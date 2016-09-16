@@ -7,6 +7,8 @@ import actions from '../../actions';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
+import { isLogged } from '../../services/authService';
+
 import AppBar from '../../components/AppBar/AppBar';
 import SensorDialog from '../../components/SensorDialog/SensorDialog';
 import SignallerDialog from '../../components/SignallerDialog/SignallerDialog';
@@ -24,22 +26,25 @@ const style = {
 class App extends AuthorizedComponent {
 
   componentWillMount() {
+    super.componentWillMount();
 
-    this.props.actions.loadZones();
-    this.props.actions.loadArmedZones();
-    this.props.actions.loadFreeSlots();
-    this.props.actions.loadSlots();
+    if (isLogged()) {
+      this.props.actions.loadZones();
+      this.props.actions.loadArmedZones();
+      this.props.actions.loadFreeSlots();
+      this.props.actions.loadSlots();
+      this.props.actions.loadSignallers();
+      this.props.actions.loadSensors();
+    }
 
-    this.props.actions.loadSignallers();
-    this.props.actions.loadSensors();
+
   }
 
   render() {
-
-
-    if (this.props.piguard.slots.length === 0) {
+    if (this.props.piguard.slots.length === 0 || !isLogged()) {
       return null;
     }
+
 
     return (
       <div className="App">

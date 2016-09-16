@@ -7,15 +7,19 @@ function getToken() {
 }
 
 function getAuthHeader() {
-  return { 'Authorization': getToken() };
+  return { 'x-auth-token': `${getToken()}` };
 }
 
 export function login(token) {
-  return fetch('api/v1/auth/login', { headers: { 'Authorization': token }}).then((res) => res.status !== 401);
+  return fetch('auth/login', { headers: { 'Authorization': `Basic ${token}` }})
+    .then(res => ({
+      isSuccess: res.status !== 401,
+      token: res.headers.get('x-auth-token'),
+    }));
 }
 
-export function logout(token) {
-  return fetch('api/v1/auth/logout', { headers: { 'Authorization': token }}).then((res) => res.status !== 401);
+export function logout() {
+  return fetch('auth/logout', { headers: { 'Authorization': `Basic ${getToken()}` }}).then((res) => res.status !== 401);
 }
 
 export function getSensors() {
@@ -61,7 +65,7 @@ export function postSensor(sensor) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': getToken()
+        'x-auth-token': getToken()
       },
       method: 'POST',
       body: JSON.stringify(sensor)
@@ -75,7 +79,7 @@ export function postSignaller(signaller) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': getToken()
+        'x-auth-token': getToken()
       },
       method: 'POST',
       body: JSON.stringify(signaller)
@@ -88,7 +92,7 @@ export function postZone(zone) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': getToken()
+        'x-auth-token': getToken()
       },
       method: 'POST',
       body: JSON.stringify(zone)
@@ -101,7 +105,7 @@ export function postArmZone(zone) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': getToken()
+        'x-auth-token': getToken()
       },
       method: 'POST',
       body: JSON.stringify(zone)
