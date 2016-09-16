@@ -3,6 +3,8 @@ import { getSensors, getSensorsProfile, getSlots, getFreeSlots,
   deleteSensor, deleteArmedZone, deleteSignaller, postZone, deleteZone, postArmZone,
   updateSettings as restUpdateSettings, getSettings } from '../services/restService';
 
+import { logout } from '../services/authService';
+
 export const SIGNALLER_WINDOW_VISIBILITY = 'SIGNALLER_WINDOW_VISIBILITY';
 export const ZONE_WINDOW_VISIBILITY = 'ZONE_WINDOW_VISIBILITY';
 export const SENSOR_WINDOW_VISIBILITY = 'SENSOR_WINDOW_VISIBILITY';
@@ -88,10 +90,18 @@ function loadArmedZones() {
   }
 }
 
-function armZone(zone) {
-  return dispatch => {
+function autoLogout(delay, router) {
+  setTimeout(() => {
+    logout();
+    router.push('/login');
+  }, delay * 1000);
+}
+
+function armZone(zone, router) {
+  return (dispatch, getState) => {
     postArmZone(zone)
       .then((armedZone) => {
+        autoLogout(getState().piguard.settings.exitDelay, router);
         return dispatch({
           type: ARM_ZONE,
           armedZone

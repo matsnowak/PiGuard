@@ -69,7 +69,7 @@ class LoginBox extends Component {
         <TextField
           style={{ width: 75, marginLeft: '25px' }}
           hintStyle={{ color: 'black', textAlign: 'center' }}
-          floatingLabelText="Enter Pin"
+          hintText="Enter Pin"
           value={this.state.value}
           onChange={this.handleChange}
           errorText={this.state.errorText}

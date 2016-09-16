@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
@@ -12,6 +12,14 @@ import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
 
 class ArmZoneDialog extends Component {
+
+  static propTypes = {
+    routes: PropTypes.array.isRequired
+  };
+
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
 
   state = {
     name: '',
@@ -39,7 +47,8 @@ class ArmZoneDialog extends Component {
           this.props.actions.armZone({
             startGuardFrom: date.substring(0, date.length - 1),
             zone: this.props.zone.link,
-          })
+          }, this.context.router);
+          this.props.actions.endArming();
         }}
 
       />,
