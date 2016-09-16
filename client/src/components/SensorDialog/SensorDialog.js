@@ -92,7 +92,7 @@ class SensorDialog extends Component {
         <TextField
           value={this.state.name}
           onChange={this.handleChangeName}
-          hintText="Name"
+          floatingLabelText="Name"
         />
         <SelectField style={{ textAlign: 'left'}} floatingLabelText="Triggered On" value={this.state.triggerIndex} onChange={this.handleChangeTrigger}>
           <MenuItem value={0} primaryText={triggers[0]} />
