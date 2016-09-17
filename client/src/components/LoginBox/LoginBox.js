@@ -4,6 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import LinearProgress from 'material-ui/LinearProgress';
+import Arrow from 'material-ui/svg-icons/navigation/arrow-forward';
 
 import { login } from '../../services/authService';
 
@@ -77,11 +78,10 @@ class LoginBox extends Component {
         />
         <IconButton
           onClick={this.loginWithPin}
-          iconClassName="material-icons"
           style={{ verticalAlign: 'bottom', margin: 0, padding: 0 }}
           disabled={this.state.disabled}
         >
-          arrow_forward
+          <Arrow />
         </IconButton>
       </div>
     );
