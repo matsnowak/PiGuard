@@ -8,12 +8,14 @@ import com.matsnowak.piguard.core.AlarmScheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
 /**
  * Created by Mateusz Nowak on 16.09.2016.
  */
+@Component
 public class OnAlarmScheduledEL implements EventListener<AlarmScheduledEvent>{
     private static Logger logger = LoggerFactory.getLogger(OnAlarmScheduledEL.class);
 

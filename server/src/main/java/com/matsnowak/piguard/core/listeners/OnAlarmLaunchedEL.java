@@ -9,12 +9,14 @@ import com.matsnowak.piguard.repositories.ArmedZoneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
 /**
  * Created by Mateusz Nowak on 17.09.2016.
  */
+@Component
 public class OnAlarmLaunchedEL implements EventListener<AlarmLaunchedEvent> {
     private static Logger logger = LoggerFactory.getLogger(OnAlarmLaunchedEL.class);
 
