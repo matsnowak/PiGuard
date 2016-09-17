@@ -1,9 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Chip from 'material-ui/Chip';
 
 class Zones extends Component {
+
+  static propTypes = {
+    routes: PropTypes.array.isRequired
+  };
+
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
 
   getZone(id) {
     return this.props.piguard.zones.find(zone => zone.id === id);
@@ -89,7 +97,9 @@ class Zones extends Component {
                 </div>
               </CardText>
               <CardActions>
-                <FlatButton label="Arm zone" onClick={() => this.props.actions.startArming(zone)}/>
+                <FlatButton label="Arm zone" onClick={() => this.props.actions.armZone({
+                  zone: zone.link,
+                }, this.context.router)}/>
                 <FlatButton secondary label="Remove zone" onClick={() => this.props.actions.removeZone(zone)}/>
               </CardActions>
             </Card>
