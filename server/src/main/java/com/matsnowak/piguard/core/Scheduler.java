@@ -76,7 +76,7 @@ public class Scheduler {
         }
 
         logoutTimer = new Timer("Logout schedule");
-        logoutTimer.schedule(new LogoutTimer(authorizationController), delayInSeconds);
+        logoutTimer.schedule(new LogoutTimer(authorizationController), delayInSeconds * 1000);
     }
 
 
