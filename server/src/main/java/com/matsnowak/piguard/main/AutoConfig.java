@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Temporary used for loading settings
@@ -30,8 +31,15 @@ public class AutoConfig {
 
 
     public void init() {
-        slotRepository.save(slots());
+        initSlots();
         initDefaultSettings();
+    }
+
+    private void initSlots() {
+        Set<Slot> all = slotRepository.findAll();
+        if (all.isEmpty()) {
+            slotRepository.save(slots());
+        }
     }
 
     private void initDefaultSettings() {
