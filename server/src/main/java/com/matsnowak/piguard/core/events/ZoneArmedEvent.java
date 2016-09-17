@@ -10,20 +10,20 @@ import java.time.LocalDateTime;
  */
 public class ZoneArmedEvent extends Event {
     private Integer zoneId;
-    private LocalDateTime startGuardFrom;
+    private Integer delayInSeconds;
 
-    public ZoneArmedEvent(Integer zoneId, LocalDateTime startGuardFrom) {
+    public ZoneArmedEvent(Integer zoneId, Integer delayInSeconds) {
         super();
         this.zoneId = zoneId;
-        this.startGuardFrom = startGuardFrom;
+        this.delayInSeconds = delayInSeconds;
     }
 
     public Integer getZoneId() {
         return zoneId;
     }
 
-    public LocalDateTime getStartGuardFrom() {
-        return startGuardFrom;
+    public Integer getDelayInSeconds() {
+        return delayInSeconds;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ZoneArmedEvent extends Event {
     public String toString() {
         return "ZoneArmedEvent{" +
                 "zoneId=" + zoneId +
-                ", startGuardFrom=" + startGuardFrom +
+                ", delayInSeconds=" + delayInSeconds +
                 "} " + super.toString();
     }
 }

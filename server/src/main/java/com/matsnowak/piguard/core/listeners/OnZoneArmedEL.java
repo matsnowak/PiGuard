@@ -3,6 +3,7 @@ package com.matsnowak.piguard.core.listeners;
 import com.matsnowak.piguard.core.EventListener;
 import com.matsnowak.piguard.core.EventService;
 import com.matsnowak.piguard.core.Platform;
+import com.matsnowak.piguard.core.Scheduler;
 import com.matsnowak.piguard.core.events.ZoneArmedEvent;
 import com.matsnowak.piguard.model.Zone;
 import com.matsnowak.piguard.repositories.ZoneRepository;
@@ -29,6 +30,9 @@ public class OnZoneArmedEL implements EventListener<ZoneArmedEvent> {
     private Platform platform;
 
     @Autowired
+    Scheduler scheduler;
+
+    @Autowired
     private ZoneRepository zoneRepository;
 
     @PostConstruct
@@ -44,5 +48,7 @@ public class OnZoneArmedEL implements EventListener<ZoneArmedEvent> {
             return;
         }
         platform.startMonitoring(armedZone);
+        scheduler.scheduleLogout(event.getDelayInSeconds());
+
     }
 }

@@ -1,5 +1,6 @@
 package com.matsnowak.piguard.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -22,8 +23,7 @@ public class ArmedZone {
     private Zone zone;
 
     @Column(nullable = false)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonIgnore
     private LocalDateTime startGuardFrom;
 
     public ArmedZone() {}
@@ -36,7 +36,6 @@ public class ArmedZone {
         return zone;
     }
 
-
     public LocalDateTime getStartGuardFrom() {
         return startGuardFrom;
     }
@@ -47,6 +46,10 @@ public class ArmedZone {
 
     private ArmedZone(Zone zone, LocalDateTime startGuardFrom) {
         this.zone = zone;
+        this.startGuardFrom = startGuardFrom;
+    }
+
+    public void setStartGuardFrom(LocalDateTime startGuardFrom) {
         this.startGuardFrom = startGuardFrom;
     }
 

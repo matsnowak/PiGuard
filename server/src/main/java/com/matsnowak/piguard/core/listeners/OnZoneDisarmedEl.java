@@ -3,7 +3,7 @@ package com.matsnowak.piguard.core.listeners;
 import com.matsnowak.piguard.core.EventListener;
 import com.matsnowak.piguard.core.EventService;
 import com.matsnowak.piguard.core.Platform;
-import com.matsnowak.piguard.core.AlarmScheduler;
+import com.matsnowak.piguard.core.Scheduler;
 import com.matsnowak.piguard.core.events.ZoneDisarmedEvent;
 import com.matsnowak.piguard.model.Zone;
 import com.matsnowak.piguard.repositories.ZoneRepository;
@@ -31,7 +31,7 @@ public class OnZoneDisarmedEl implements EventListener<ZoneDisarmedEvent> {
     private ZoneRepository zoneRepository;
 
     @Autowired
-    AlarmScheduler alarmScheduler;
+    Scheduler scheduler;
 
     @PostConstruct
     private void init() {
@@ -47,6 +47,6 @@ public class OnZoneDisarmedEl implements EventListener<ZoneDisarmedEvent> {
         }
 
         platform.stopMonitoring(disarmedZone);
-        alarmScheduler.cancelAlarmSchedule(disarmedZone.getId());
+        scheduler.cancelAlarmSchedule(disarmedZone.getId());
     }
 }

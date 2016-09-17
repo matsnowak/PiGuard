@@ -1,9 +1,11 @@
 package com.matsnowak.piguard.core;
 
+import com.matsnowak.piguard.controllers.AuthorizationController;
 import com.matsnowak.piguard.core.events.AlarmLaunchedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -15,14 +17,21 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Mateusz Nowak on 16.09.2016.
  */
 @Component
-public class AlarmScheduler {
-    private static Logger logger = LoggerFactory.getLogger(AlarmScheduler.class);
+public class Scheduler {
+    private static Logger logger = LoggerFactory.getLogger(Scheduler.class);
 
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private AuthorizationController authorizationController;
+
     private Map<Integer, AlarmSchedule> timerMap = new ConcurrentHashMap<>();
 
+    private Timer logoutTimer;
+
+
+    // TODO possible add cancel logout
 
 
     public void scheduleAlarm(Set<Integer> armedZonesIds, Integer delayInSeconds, int triggeredBySensorId) {
@@ -57,6 +66,17 @@ public class AlarmScheduler {
         Timer timer = new Timer("Alarm schedule for armed zone " + armedZoneId);
         timer.schedule(new AlarmStartDelayedTimer(armedZoneId, eventService), delayInSeconds * 1000);
         timerMap.put(armedZoneId, new AlarmSchedule(timer, targetTime));
+    }
+
+    public void scheduleLogout(Integer delayInSeconds) {
+
+        if (logoutTimer != null) {
+            logoutTimer.cancel();
+            logoutTimer = null;
+        }
+
+        logoutTimer = new Timer("Logout schedule");
+        logoutTimer.schedule(new LogoutTimer(authorizationController), delayInSeconds);
     }
 
 
@@ -105,6 +125,20 @@ public class AlarmScheduler {
         @Override
         public int hashCode() {
             return Objects.hash(getTimer(), getAlarmTime());
+        }
+    }
+
+    private class LogoutTimer extends TimerTask{
+        private final AuthorizationController authorizationController;
+        public LogoutTimer(AuthorizationController authorizationController) {
+            this.authorizationController = authorizationController;
+        }
+
+        @Override
+        public void run() {
+            logger.info("Logging out");
+//            authorizationController.logout();
+            SecurityContextHolder.getContext().setAuthentication(null);
         }
     }
 }

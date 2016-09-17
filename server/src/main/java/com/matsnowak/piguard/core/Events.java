@@ -15,8 +15,8 @@ public class Events {
         return new SensorActivatedEvent(sensorId);
     }
 
-    public static ZoneArmedEvent newZoneArmedEvent(Integer zoneId, LocalDateTime startGuardFrom) {
-        return new ZoneArmedEvent(zoneId, startGuardFrom);
+    public static ZoneArmedEvent newZoneArmedEvent(Integer zoneId, Integer delayInSeconds) {
+        return new ZoneArmedEvent(zoneId, delayInSeconds);
     }
 
     public static ZoneDisarmedEvent newZoneDisarmedEvent(Integer zoneId) {

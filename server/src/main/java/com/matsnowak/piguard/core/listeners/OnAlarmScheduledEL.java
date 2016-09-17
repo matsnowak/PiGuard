@@ -4,7 +4,7 @@ import com.matsnowak.piguard.core.EventListener;
 import com.matsnowak.piguard.core.EventService;
 import com.matsnowak.piguard.core.events.AlarmScheduledEvent;
 import com.matsnowak.piguard.repositories.ArmedZoneRepository;
-import com.matsnowak.piguard.core.AlarmScheduler;
+import com.matsnowak.piguard.core.Scheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class OnAlarmScheduledEL implements EventListener<AlarmScheduledEvent>{
     ArmedZoneRepository armedZoneRepository;
 
     @Autowired
-    AlarmScheduler scheduler;
+    Scheduler scheduler;
 
     @PostConstruct
     private void init() {
