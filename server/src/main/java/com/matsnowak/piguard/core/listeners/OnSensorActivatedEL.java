@@ -4,11 +4,14 @@ import com.google.common.collect.Lists;
 import com.matsnowak.piguard.core.EventListener;
 import com.matsnowak.piguard.core.EventService;
 import com.matsnowak.piguard.core.Platform;
+import com.matsnowak.piguard.core.events.AlarmScheduledEvent;
 import com.matsnowak.piguard.core.events.SensorActivatedEvent;
 import com.matsnowak.piguard.model.ArmedZone;
 import com.matsnowak.piguard.model.Sensor;
+import com.matsnowak.piguard.model.Settings;
 import com.matsnowak.piguard.repositories.ArmedZoneRepository;
 import com.matsnowak.piguard.repositories.SensorRepository;
+import com.matsnowak.piguard.repositories.SettingsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -38,6 +42,9 @@ public class OnSensorActivatedEL implements EventListener<SensorActivatedEvent> 
     @Autowired
     EventService eventService;
 
+    @Autowired
+    SettingsRepository settingsRepository;
+
     @PostConstruct
     private void init() {
         eventService.register(this, SensorActivatedEvent.class);
@@ -55,8 +62,17 @@ public class OnSensorActivatedEL implements EventListener<SensorActivatedEvent> 
                 .filter(armedZone -> event.getCreated().isAfter(armedZone.getStartGuardFrom()))
                 .collect(Collectors.toList());
 
-        armedZonesContainingSensor.forEach(armedZone -> {
-            platform.enableSignallers(armedZone.getZone().getSignallers());
-        });
+        Set<Integer> armedZonesIds = armedZonesContainingSensor.stream()
+                .map(armedZone -> armedZone.getId())
+                .collect(Collectors.toSet());
+
+        if (!armedZonesIds.isEmpty()) {
+            Settings settings = settingsRepository.findOne(1);
+            if (settings == null) {
+                logger.error("Settings is null");
+                return;
+            }
+            eventService.publish(new AlarmScheduledEvent(event.getSensorId(), armedZonesIds, settings.getDisarmDelay() ));
+        }
     }
 }

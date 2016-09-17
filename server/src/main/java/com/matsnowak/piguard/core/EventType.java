@@ -6,5 +6,7 @@ package com.matsnowak.piguard.core;
 public enum EventType {
     SENSOR_ACTIVATED,
     ZONE_ARMED,
-    ZONE_DISARMED
+    ZONE_DISARMED,
+    ALARM_SCHEDULED,
+    ALARM_LAUNCHED
 }
